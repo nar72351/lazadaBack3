@@ -26,5 +26,19 @@ public class ItemController {
     itemService.writeCode(code);
   }
 
+//  //http://localhost:8080/isexpired
+//  @GetMapping("/isexpired")
+//  public boolean getCode2() {
+//    //System.out.println(itemService.isExpired());
+//    return itemService.isExpired();
+//  }
+
+  //http://localhost:8080/orders
+  @GetMapping("/orders")
+  public String getOrders() {
+    //System.out.println(itemService.isExpired());
+    return itemService.getOrders();
+  }
+
 }
 

@@ -35,7 +35,7 @@ public class ItemService {
       String access_token = gerRefreshedAccessToken(refresh_token);
       System.out.println("access_token: " + access_token);
 
-      //orders = GetOrders(access_token);
+      orders = GetOrders(access_token);
     } catch (Exception e) {
       //e.printStackTrace();
       System.out.println("ERROR in getOrders()");

@@ -23,45 +23,6 @@ public class ItemService {
   private static FileWriter fileWriter;
   private String fileName = "code.txt";
 
-  public boolean writeCode(String code) {
-    boolean itFinished = false;
-    initFiles();
-    writeToFile(code, fileWriter);
-    return itFinished;
-  }
-
-  public boolean isExpired() {
-    boolean isExpired = true;
-
-    try {
-
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return isExpired;
-  }
-
-  private void initFiles() {
-    try {
-      fileWriter = new FileWriter(new File(fileName), true);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private static void writeToFile(String content, FileWriter fileWriter) {
-    try {
-      fileWriter.write(content);
-      fileWriter.write("\n");
-      fileWriter.flush();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-
   public String getOrders() {
     String orders = "No new orders yet...";
     System.out.println("getOrders");
@@ -69,13 +30,15 @@ public class ItemService {
       File file = new File("refreshToken.txt");
       List<String> list = readFile(file);
       String refresh_token = list.get(list.size() - 1).trim();
+      System.out.println("refresh_token: " + refresh_token);
 
       String access_token = gerRefreshedAccessToken(refresh_token);
       System.out.println("access_token: " + access_token);
 
       orders = GetOrders(access_token);
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
+      System.out.println("ERROR in getOrders()");
     }
 
     return orders;
@@ -106,7 +69,8 @@ public class ItemService {
       orders = response.getBody();
       Thread.sleep(10);
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
+      System.out.println("ERROR in GetOrders()");
     }
     return orders;
   }
@@ -136,7 +100,8 @@ public class ItemService {
       String body = response.getBody();
       access_token = getAccessTokenFromJson(body);
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
+      System.out.println("ERROR in gerRefreshedAccessToken()");
     }
     return access_token;
   }
@@ -155,7 +120,8 @@ public class ItemService {
 
       access_token = getSTRING(jsonObject, "access_token");
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
+      System.out.println("ERROR in getAccessTokenFromJson()");
     }
 
     return access_token;
@@ -168,4 +134,41 @@ public class ItemService {
     }
     return result;
   }
+//  public boolean writeCode(String code) {
+//    boolean itFinished = false;
+//    initFiles();
+//    writeToFile(code, fileWriter);
+//    return itFinished;
+//  }
+//
+//  public boolean isExpired() {
+//    boolean isExpired = true;
+//
+//    try {
+//
+//
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    return isExpired;
+//  }
+//
+//  private void initFiles() {
+//    try {
+//      fileWriter = new FileWriter(new File(fileName), true);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//  }
+//
+//  private static void writeToFile(String content, FileWriter fileWriter) {
+//    try {
+//      fileWriter.write(content);
+//      fileWriter.write("\n");
+//      fileWriter.flush();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//  }
 }

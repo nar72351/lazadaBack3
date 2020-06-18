@@ -15,17 +15,17 @@ public class ItemController {
   @Autowired
   ItemService itemService;
 
-  @RequestMapping("/")
-  public void getCode1(@RequestParam("code") String code) {
-    System.out.println("1-CODE: " + code);
-    itemService.writeCode(code);
-  }
-
-  @RequestMapping("/{code}")
-  public void getCode2(@PathVariable("code") String code) {
-    System.out.println("2-CODE: " + code);
-    itemService.writeCode(code);
-  }
+//  @RequestMapping("/")
+//  public void getCode1(@RequestParam("code") String code) {
+//    System.out.println("1-CODE: " + code);
+//    itemService.writeCode(code);
+//  }
+//
+//  @RequestMapping("/{code}")
+//  public void getCode2(@PathVariable("code") String code) {
+//    System.out.println("2-CODE: " + code);
+//    itemService.writeCode(code);
+//  }
 
 //  //http://localhost:8080/isexpired
 //  @GetMapping("/isexpired")

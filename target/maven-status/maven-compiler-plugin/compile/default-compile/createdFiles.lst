@@ -1,4 +1,5 @@
 com\scrapper\lazadaBack\model\Item.class
 com\scrapper\lazadaBack\LazadaBackApplication.class
 com\scrapper\lazadaBack\api\ItemController.class
+com\scrapper\lazadaBack\model\Globals.class
 com\scrapper\lazadaBack\service\ItemService.class

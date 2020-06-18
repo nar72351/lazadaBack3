@@ -36,6 +36,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.lazada.lazop.api</groupId>
+            <artifactId>lazop-api-sdk</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+ 
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>

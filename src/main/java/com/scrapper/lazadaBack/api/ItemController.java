@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ItemController {
+
   //https://www.lazada.com/?code=0_tryzThknf4684883sd5c1d5
   //http://localhost:8080/?code=0_tryzThknf4684883sd5c1d5
 
@@ -36,6 +37,7 @@ public class ItemController {
   //http://localhost:8080/orders
   @GetMapping("/orders")
   public String getOrders() {
+    System.out.println("ItemController");
     //System.out.println(itemService.isExpired());
     return itemService.getOrders();
   }

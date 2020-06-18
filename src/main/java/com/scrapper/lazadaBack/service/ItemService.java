@@ -64,7 +64,7 @@ public class ItemService {
 
   public String getOrders() {
     String orders = "No new orders yet...";
-
+    System.out.println("getOrders");
     try {
       File file = new File("refreshToken.txt");
       List<String> list = readFile(file);

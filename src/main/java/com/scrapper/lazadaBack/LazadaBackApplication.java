@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LazadaBackApplication {
 
   public static void main(String[] args) {
+    System.out.println("LazadaBackApplication");
     SpringApplication.run(LazadaBackApplication.class, args);
   }
 

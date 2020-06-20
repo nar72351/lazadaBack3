@@ -3,7 +3,10 @@ package com.scrapper.lazadaBack.api;
 
 import com.scrapper.lazadaBack.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ItemController {
@@ -33,13 +36,49 @@ public class ItemController {
 //    return itemService.isExpired();
 //  }
 
+//  //http://localhost:8080/orders
+//  @GetMapping("/orders")
+//  public String getOrders() {
+//    System.out.println("ItemController");
+//    //System.out.println(itemService.isExpired());
+//    return itemService.getOrders();
+//  }
+//  //http://localhost:8080/orders
+//  @GetMapping("/orders")
+//  public String getOrders(HttpServletResponse response) {
+//    System.out.println("ItemController");
+//    response.setHeader("Cache-Control", "no-cache");
+//    //System.out.println(itemService.isExpired());
+//    return itemService.getOrders();
+//  }
+
+//  //http://localhost:8080/orders
+//  @GetMapping("/orders")
+//  public Mono<ResponseEntity<String>> getOrders() {
+//    System.out.println("ItemController");
+//
+//
+//    String responseHeaderKey = "Baeldung-Example-Header";
+//    String responseHeaderValue = "Value-ResponseEntityBuilder";
+//    String responseBody = "Response with header using ResponseEntity (builder)";
+//
+//    return Mono.just(ResponseEntity.ok()
+//            .header(responseHeaderKey, responseHeaderValue)
+//            .body(responseBody));
+//
+//
+//    return itemService.getOrders();
+//  }
+
   //http://localhost:8080/orders
+  @CrossOrigin(origins = "*")
   @GetMapping("/orders")
   public String getOrders() {
     System.out.println("ItemController");
     //System.out.println(itemService.isExpired());
     return itemService.getOrders();
   }
+
 
 }
 

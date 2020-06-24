@@ -23,6 +23,64 @@ public class ItemService {
   private static FileWriter fileWriter;
   private String fileName = "code.txt";
 
+
+  public String getOrdersForGivenTime(String created_before, String created_after) {
+    String ordersForGivenTime = "No new ordersForGivenTime yet...";
+    System.out.println("getOrdersForGivenTime");
+    try {
+      File file = new File("refreshToken.txt");
+      List<String> list = readFile(file);
+      String refresh_token = list.get(list.size() - 1).trim();
+      System.out.println("refresh_token: " + refresh_token);
+
+      String access_token = gerRefreshedAccessToken(refresh_token);
+      System.out.println("access_token: " + access_token);
+
+      created_before = created_before + "T09:00:00+08:00";
+      created_after = created_after + "T09:00:00+08:00";
+
+      ordersForGivenTime = GetOrdersForGivenTime(access_token, created_before, created_after);
+    } catch (Exception e) {
+      //e.printStackTrace();
+      System.out.println("ERROR in getOrdersForGivenTime()");
+    }
+
+    return ordersForGivenTime;
+  }
+
+  private String GetOrdersForGivenTime(String access_token, String created_before, String created_after) {
+    String ordersForGivenTime = "";
+    try {
+      String url = "https://api.lazada.co.th/rest";
+      String appkey = "119295";
+      String appSecret = "nPI7IibeDTPsXoRZr1dBXJquFkfsgEl3";
+
+      LazopClient client = new LazopClient(url, appkey, appSecret);
+      LazopRequest request = new LazopRequest();
+      request.setApiName("/orders/get");
+      request.setHttpMethod("GET");
+
+      request.addApiParameter("created_before", created_before);
+      request.addApiParameter("created_after", created_after);
+//      request.addApiParameter("update_before", update_before);
+//      request.addApiParameter("update_after", update_after);
+      //request.addApiParameter("limit", limit);
+
+      ///////////////////////////////////////////////
+      request.addApiParameter("offset", "0");
+//      request.addApiParameter("status", "shipped");
+      request.addApiParameter("sort_direction", "DESC");
+      //request.addApiParameter("sort_by", "updated_at");
+      LazopResponse response = client.execute(request, access_token);
+      ordersForGivenTime = response.getBody();
+      Thread.sleep(10);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return ordersForGivenTime;
+  }
+
+
   public String getOrders() {
     String orders = "No new orders yet...";
     System.out.println("getOrders");

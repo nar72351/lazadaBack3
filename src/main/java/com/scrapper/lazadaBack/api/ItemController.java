@@ -80,6 +80,8 @@ public class ItemController {
   }
 
   //http://localhost:8080/2020-06-24/2020-01-10
+  //https://www.oksender.co/2020-06-24/2020-01-10
+  @CrossOrigin(origins = "*")
   @GetMapping(value = "/{created_before}/{created_after}")
   public String GetOrdersForGivenTime(@PathVariable("created_before") String created_before, @PathVariable("created_after") String created_after) {
     System.out.println("ItemController: GetOrdersForGivenTime()");

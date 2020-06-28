@@ -72,6 +72,7 @@ public class ItemController {
   //http://localhost:8080/orders
   @CrossOrigin(origins = "*")
   @GetMapping("/orders")
+  @ResponseBody
   public String getOrders() {
     System.out.println("ItemController: getOrders()");
     //System.out.println(itemService.isExpired());
@@ -82,6 +83,7 @@ public class ItemController {
   //https://www.oksender.co/2020-06-24/2020-01-10
   @CrossOrigin(origins = "*")
   @GetMapping(value = "/{created_before}/{created_after}")
+  @ResponseBody
   public String GetOrdersForGivenTime(@PathVariable("created_before") String created_before, @PathVariable("created_after") String created_after) {
     System.out.println("ItemController: GetOrdersForGivenTime()");
     return itemService.getOrdersForGivenTime(created_before, created_after);

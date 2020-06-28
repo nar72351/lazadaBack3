@@ -87,9 +87,16 @@ public class ItemController {
     return itemService.getOrdersForGivenTime(created_before, created_after);
   }
 
-  //http://localhost:8080/home
+//  //http://localhost:8080/home
+//  @CrossOrigin(origins = "*")
+//  @RequestMapping("/home")
+//  public String showHome() {
+//    return "home";
+//  }
+
+  //http://localhost:8080/
   @CrossOrigin(origins = "*")
-  @RequestMapping("/home")
+  @RequestMapping("/")
   public String showHome() {
     return "home";
   }

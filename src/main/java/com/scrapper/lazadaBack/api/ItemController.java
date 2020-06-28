@@ -1,14 +1,13 @@
 package com.scrapper.lazadaBack.api;
 
-
 import com.scrapper.lazadaBack.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 
-@RestController
+
+@Controller
 public class ItemController {
 
   //https://www.lazada.com/?code=0_tryzThknf4684883sd5c1d5
@@ -86,6 +85,13 @@ public class ItemController {
   public String GetOrdersForGivenTime(@PathVariable("created_before") String created_before, @PathVariable("created_after") String created_after) {
     System.out.println("ItemController: GetOrdersForGivenTime()");
     return itemService.getOrdersForGivenTime(created_before, created_after);
+  }
+
+  //http://localhost:8080/home
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/home")
+  public String showHome() {
+    return "home";
   }
 
 }

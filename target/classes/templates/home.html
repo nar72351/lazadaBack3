@@ -1,0 +1,875 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <title>Lazada Admin Dashboard</title>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            font-family: "Montserrat", sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            display: flex;
+        }
+
+        .menu-general {
+            width: 250px;
+            height: 100vh;
+            background-color: #313852;
+            border-top-right-radius: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-general .logo {
+            color: #fff;
+            padding: 0 25px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-general .logo h1 {
+            font-size: 24px;
+            color: white;
+        }
+
+        .menu-general .navbar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-general .navbar a {
+            color: #999;
+            display: flex;
+            padding: 15px 0;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .menu-general .navbar a i {
+            padding: 0 15px;
+        }
+
+        .menu-general .navbar a:hover {
+            background-color: #999;
+            color: #313852;
+        }
+
+        .menu-general .navbar a:active {
+            transform: translateY(4px);
+        }
+
+        /* ----- BODY TOP SECTION ------ */
+
+        main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .body-top {
+            display: flex;
+            width: 98%;
+            justify-content: space-between;
+            justify-self: center;
+            height: 60px;
+            align-items: center;
+            /*justify-content: flex-end;*/
+            padding: 0 50px;
+            background-color: #f3f4fc;
+            margin: 15px;
+            border-radius: 20px;
+        }
+
+        .body-top .top-right {
+            display: flex;
+            justify-items: center;
+        }
+
+        .body-top .top-right i {
+            color: #333;
+            margin-right: 20px;
+            font-size: 26px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .body-top .top-right i:hover {
+            opacity: 0.8;
+        }
+
+        /* DETAILS */
+        section.details {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            flex-wrap: wrap;
+        }
+
+        /* Table */
+        table {
+            height: 40%;
+            left: 10%;
+            margin: 10px auto;
+            overflow-y: scroll;
+            position: static;
+            width: 100%;
+        }
+
+        thead th {
+            background: #384a94;
+            color: #fff;
+            font-family: "Lato", sans-serif;
+            font-size: 16px;
+            font-weight: 60;
+            letter-spacing: 1px;
+        }
+
+        tr {
+            background: #f4f7f8;
+            border-bottom: 1px solid #fff;
+            margin-bottom: 5px;
+        }
+
+        th,
+        td {
+            font-size: 14px;
+            padding: 10px;
+            text-align: left;
+            /*width: 11.11111%;*/
+        }
+
+        /*************************Calendar111***************/
+        .date-picker1 {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 60px;
+            background-color: #c5cef3;
+            margin: 30px 30px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .date-picker1:hover {
+            background-color: #90a1e6;
+        }
+
+        .date-picker1 .selected-date1 {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #313131;
+            font-size: 22px;
+        }
+
+        .date-picker1 .dates1 {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+
+            background-color: #fff;
+        }
+
+        .date-picker1 .dates1.active {
+            display: block;
+        }
+
+        .date-picker1 .dates1 .month1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+        }
+
+        .date-picker1 .dates1 .month1 .arrows1 {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #313131;
+            font-size: 20px;
+        }
+
+        .date-picker1 .dates1 .month1 .arrows1:hover {
+            background-color: #f3f3f3;
+        }
+
+        .date-picker1 .dates1 .month1 .arrows1:active {
+            background-color: #00ca85;
+        }
+
+        .date-picker1 .dates1 .days1 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            height: 200px;
+        }
+
+        .date-picker1 .dates1 .days1 .day1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #313131;
+        }
+
+        .date-picker1 .dates1 .days1 .day1.selected {
+            background-color: #00ca85;
+        }
+
+        /*************************Calendar222***************/
+        .date-picker2 {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 60px;
+            background-color: #c5cef3;
+            margin: 30px 30px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .date-picker2:hover {
+            background-color: #90a1e6;
+        }
+
+        .date-picker2 .selected-date2 {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #313131;
+            font-size: 22px;
+        }
+
+        .date-picker2 .dates2 {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+
+            background-color: #fff;
+        }
+
+        .date-picker2 .dates2.active {
+            display: block;
+        }
+
+        .date-picker2 .dates2 .month2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+        }
+
+        .date-picker2 .dates2 .month2 .arrows2 {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #313131;
+            font-size: 20px;
+        }
+
+        .date-picker2 .dates2 .month2 .arrows2:hover {
+            background-color: #f3f3f3;
+        }
+
+        .date-picker2 .dates2 .month2 .arrows2:active {
+            background-color: #00ca85;
+        }
+
+        .date-picker2 .dates2 .days2 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            height: 200px;
+        }
+
+        .date-picker2 .dates2 .days2 .day2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #313131;
+        }
+
+        .date-picker2 .dates2 .days2 .day2.selected {
+            background-color: #00ca85;
+        }
+
+        /*******button-my*******/
+        .button-my {
+            margin-top: 2.5rem;
+        }
+
+        .button-my {
+            display: inline-block;
+            text-decoration: none;
+            color: #313852;
+            border: 2px solid #555f83;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            transition: 0.2s linear;
+        }
+
+        .button-my:hover {
+            color: #fff;
+            background: #555f83;
+        }
+
+        /*******invisible*******/
+        .invisible {
+            margin-top: 5rem;
+            padding: 5rem;
+        }
+
+        /***********************DROPDOWN************************/
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbutton {
+            background-color: #384a94;
+            border-radius: 6px;
+            color: white;
+            padding: 8px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f8f8f8;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            text-decoration: none;
+            display: block;
+            padding: 10px 10px;
+            color: black;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #5f73c4;
+        }
+
+        .dropdown:hover .dropdown-content {
+            background-color: #f1f1f1;
+            display: block;
+        }
+
+        .dropdown:hover .dropbutton {
+            background-color: #5f73c4;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="menu-general">
+        <div class="logo">
+            <a onClick="refreshPage()" href="#">
+                <h1>Lazada Admin</h1>
+            </a>
+        </div>
+        <div class="navbar">
+            <a href="#" id="seeNewOrders"> <i class="fas fa-shopping-cart"></i> See New Orders </a>
+            <a href="#" id="ordersWithTime"> <i class="fas fa-clock"></i> Orders With Time </a>
+            <a href="#"> <i class="fas fa-archive"></i> Check Stock </a>
+            <a href="#"> <i class="fas fa-file-alt"></i> Auto Upload Products </a>
+            <a href="#"> <i class="fas fa-history"></i> History of Activities </a>
+            <a href="#"> <i class="fas fa-cogs"></i> Settings </a>
+        </div>
+    </div>
+
+    <main>
+        <section class="body-top">
+            <div class="search-box">
+                <h2>Welcome To Lazada Admin Dashboard</h2>
+            </div>
+            <div class="top-right">
+                <i class="fa fa-user"></i>
+            </div>
+        </section>
+
+        <section id="details" class="details">
+
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script>
+        document.getElementById('seeNewOrders').addEventListener('click', seeNewOrders);
+        document.getElementById('ordersWithTime').addEventListener('click', ordersWithTime);
+
+        function ordersWithTime() {
+            console.log("ordersWithTime()");
+
+            document.getElementById('details').innerHTML = `
+    <div class="date-picker1">
+        <div class="selected-date1"></div>
+
+    <div class="dates1">
+        <div class="month1">
+            <div class="arrows1 prev-mth1">&lt;</div>
+            <div class="mth1"></div>
+            <div class="arrows1 next-mth1">&gt;</div>
+        </div>
+
+        <div class="days1"></div>
+     </div>
+    </div>
+    
+    <div class="date-picker2">
+    <div class="selected-date2"></div>
+
+    <div class="dates2">
+        <div class="month2">
+            <div class="arrows2 prev-mth2">&lt;</div>
+            <div class="mth2"></div>
+            <div class="arrows2 next-mth2">&gt;</div>
+        </div>
+
+        <div class="days2"></div>
+     </div>
+    </div>
+
+    <div>
+       <a class="button-my" href="#">Show Orders</a>
+    </div>
+
+    <div class="invisible">      
+    </div>
+
+   `;
+
+            button_my = document.querySelector('.button-my');
+            button_my.addEventListener('click', showOrders);
+
+            //////////////////////11
+            date_picker_element1 = document.querySelector('.date-picker1');
+            selected_date_element1 = document.querySelector('.date-picker1 .selected-date1');
+            dates_element1 = document.querySelector('.date-picker1 .dates1');
+            mth_element1 = document.querySelector('.date-picker1 .dates1 .month1 .mth1');
+            next_mth_element1 = document.querySelector('.date-picker1 .dates1 .month1 .next-mth1');
+            prev_mth_element1 = document.querySelector('.date-picker1 .dates1 .month1 .prev-mth1');
+            days_element1 = document.querySelector('.date-picker1 .dates1 .days1');
+
+            mth_element1.textContent = months1[month1] + ' ' + year1;
+
+            selected_date_element1.textContent = 'Created before:   ' + formatDate(date1);
+            selected_date_element1.dataset.value = selectedDate1;
+
+            populateDates1();
+
+            // EVENT LISTENERS
+            date_picker_element1.addEventListener('click', toggleDatePicker1);
+            next_mth_element1.addEventListener('click', goToNextMonth1);
+            prev_mth_element1.addEventListener('click', goToPrevMonth1);
+
+            //////////////////////22
+            date_picker_element2 = document.querySelector('.date-picker2');
+            selected_date_element2 = document.querySelector('.date-picker2 .selected-date2');
+            dates_element2 = document.querySelector('.date-picker2 .dates2');
+            mth_element2 = document.querySelector('.date-picker2 .dates2 .month2 .mth2');
+            next_mth_element2 = document.querySelector('.date-picker2 .dates2 .month2 .next-mth2');
+            prev_mth_element2 = document.querySelector('.date-picker2 .dates2 .month2 .prev-mth2');
+            days_element2 = document.querySelector('.date-picker2 .dates2 .days2');
+
+            mth_element2.textContent = months2[month2] + ' ' + year2;
+
+            selected_date_element2.textContent = 'Created after:   ' + formatDate(date2);
+            selected_date_element2.dataset.value = selectedDate2;
+
+            populateDates2();
+
+            // EVENT LISTENERS
+            date_picker_element2.addEventListener('click', toggleDatePicker2);
+            next_mth_element2.addEventListener('click', goToNextMonth2);
+            prev_mth_element2.addEventListener('click', goToPrevMonth2);
+        }
+
+        function seeNewOrders() {
+            console.log("seeNewOrders()");
+
+            axios.get('https://www.oksender.co/orders', {
+                headers: { "Access-Control-Allow-Origin": "*" }
+            })
+                .then(res => showOutput1(res))
+                .catch(err => console.error(err));
+        }
+
+
+        function showOrders() {
+            console.log("showOrders()");
+
+            let created_before = document.querySelector(".selected-date1").textContent;
+            let created_after = document.querySelector(".selected-date2").textContent;
+
+            created_before = created_before.replace("Created before:", "").trim();
+            created_after = created_after.replace("Created after:", "").trim();
+
+            let D1 = created_before.split("-");
+            created_before = D1[2] + "-" + D1[1] + "-" + D1[0];
+
+            let D2 = created_after.split("-");
+            created_after = D2[2] + "-" + D2[1] + "-" + D2[0];
+
+            console.log(created_before);
+            console.log(created_after);
+
+            //https://www.oksender.co/2020-06-24/2020-01-10
+            let reqUrl = `https://www.oksender.co/${created_before}/${created_after}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => showOutput1(res))
+                .catch(err => console.error(err));
+        }
+
+        // Show output in browser
+        function showOutput1(res) {
+            console.log(res);
+
+            let data = res.data;
+            let dataObj = data.data;
+            let ordersArray = dataObj.orders;
+
+            console.log(`length: ${ordersArray.length}`);
+
+
+            document.getElementById('details').innerHTML = `
+        <table id="table" class="table">
+          <thead>
+           <tr>
+              <th>Options</th>
+              <th>Order No.</th>
+              <th>Order Date</th>
+              <th>Price</th>
+              <th>Shipping Fee</th>
+              <th>Payment Method</th>
+              <th>Items Count</th>
+              <th>Status</th>
+              <th>Warehouse</th>
+           </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      `;
+
+            for (let i = 0; i < ordersArray.length; i++) {
+                let eachObj = ordersArray[i];
+
+                let order_number = eachObj.order_number;
+                let created_at = eachObj.created_at;
+                var createDate = created_at.slice(0, 20);
+                let price = eachObj.price;
+                let payment_method = eachObj.payment_method;
+                let shipping_fee = eachObj.shipping_fee;
+                let items_count = eachObj.items_count;
+                let status = eachObj.statuses[0];
+                let warehouse_code = eachObj.warehouse_code;
+
+                document.querySelector('.details tbody').innerHTML += `
+            <tr>
+              <td> 	 
+                 <div class="dropdown">
+                    <button class="dropbutton"> Select <i class="fas fa-caret-down"></i></button>
+                     <div class="dropdown-content">
+                         <a href="#">Cancel the order</a>
+                         <a href="#">Set invoice number</a>
+                         <a href="#">Mark as being packed</a>
+                         <a href="#">Mark as being ready to ship</a>
+                         <a href="#">Mark as being delivered</a>
+                     </div>
+                 </div> 
+              </td>
+              <td>${order_number}</td>
+              <td>${createDate}</td>
+              <td>${price}</td>
+              <td>${shipping_fee}</td>
+              <td>${payment_method}</td>        
+              <td>${items_count}</td>
+              <td>${status}</td>
+              <td>${warehouse_code}</td>
+           </tr>
+      `;
+            }
+
+            // /******/
+            // document.querySelector('.dropdown-content').onclick = function (ev) {
+            //     var index = ev.target.parentElement.parentElement.parentElement.parentElement.index;
+            //     console.log(`index: ${index}`)
+            // }
+
+            let divs = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < divs.length; i++) {
+                divs[i].addEventListener("click", function (e) {
+                    let innerText = e.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+                    markAsBeingPacked(id)
+
+                    /*   ARA bayc hla pti imanam nayev te inch knopkaya sxmel... vobshem qaqa.....    */
+                });
+            }
+        }
+
+        function markAsBeingPacked(id) {
+            console.log(`id: ${id}`)
+        }
+
+        function stringToHTML(str) {
+            // var parser = new DOMParser();
+            // var doc = parser.parseFromString(str, 'text/html');
+            // return doc.body;
+
+            var dom = document.createElement('div');
+            dom.innerHTML = str;
+            return dom;
+        }
+
+
+        let button_my
+        ///////////////////////////////////////////////Calendar1111
+        let date_picker_element1
+        let selected_date_element1
+        let dates_element1
+        let mth_element1
+        let next_mth_element1
+        let prev_mth_element1
+        let days_element1
+
+        const months1 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        let date1 = new Date();
+        let day1 = date1.getDate();
+        let month1 = date1.getMonth();
+        let year1 = date1.getFullYear();
+
+        let selectedDate1 = date1;
+        let selectedDay1 = day1;
+        let selectedMonth1 = month1;
+        let selectedYear1 = year1;
+
+        // FUNCTIONS
+        function toggleDatePicker1(e) {
+            if (!checkEventPathForClass(e.path, 'dates1')) {
+                dates_element1.classList.toggle('active');
+            }
+        }
+
+        function goToNextMonth1(e) {
+            month1++;
+            if (month1 > 11) {
+                month1 = 0;
+                year1++;
+            }
+            mth_element1.textContent = months1[month1] + ' ' + year1;
+            populateDates1();
+        }
+
+        function goToPrevMonth1(e) {
+            month1--;
+            if (month1 < 0) {
+                month1 = 11;
+                year1--;
+            }
+            mth_element1.textContent = months1[month1] + ' ' + year1;
+            populateDates1();
+        }
+
+        function populateDates1(e) {
+            days_element1.innerHTML = '';
+            let amount_days1 = 31;
+
+            if (month1 == 1) {
+                amount_days1 = 29;
+            }
+            if (month1 == 3 || month1 == 5 || month1 == 8 || month1 == 10) {
+                amount_days1 = 30;
+            }
+
+            for (let i = 0; i < amount_days1; i++) {
+                const day_element1 = document.createElement('div');
+                day_element1.classList.add('day1');
+                day_element1.textContent = i + 1;
+
+                if (selectedDay1 == (i + 1) && selectedYear1 == year1 && selectedMonth1 == month1) {
+                    day_element1.classList.add('selected');
+                }
+
+                day_element1.addEventListener('click', function () {
+                    selectedDate1 = new Date(year1 + '-' + (month1 + 1) + '-' + (i + 1));
+                    selectedDay1 = (i + 1);
+                    selectedMonth1 = month1;
+                    selectedYear1 = year1;
+
+                    selected_date_element1.textContent = 'Created before:   ' + formatDate(selectedDate1);
+                    selected_date_element1.dataset.value = selectedDate1;
+
+                    populateDates1();
+                });
+
+                days_element1.appendChild(day_element1);
+            }
+            //console.log(formatDate(selectedDate))
+        }
+
+
+        ///////////////////////////////////////////////Calendar2222
+        let date_picker_element2
+        let selected_date_element2
+        let dates_element2
+        let mth_element2
+        let next_mth_element2
+        let prev_mth_element2
+        let days_element2
+
+        const months2 = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        let date2 = new Date();
+        let day2 = date2.getDate();
+        let month2 = date2.getMonth();
+        let year2 = date2.getFullYear();
+
+        let selectedDate2 = date2;
+        let selectedDay2 = day2;
+        let selectedMonth2 = month2;
+        let selectedYear2 = year2;
+
+        // FUNCTIONS
+        function toggleDatePicker2(e) {
+            if (!checkEventPathForClass(e.path, 'dates2')) {
+                dates_element2.classList.toggle('active');
+            }
+        }
+
+        function goToNextMonth2(e) {
+            month1++;
+            if (month1 > 11) {
+                month1 = 0;
+                year1++;
+            }
+            mth_element2.textContent = months2[month2] + ' ' + year2;
+            populateDates2();
+        }
+
+        function goToPrevMonth2(e) {
+            month2--;
+            if (month2 < 0) {
+                month2 = 11;
+                year2--;
+            }
+            mth_element2.textContent = months2[month2] + ' ' + year2;
+            populateDates2();
+        }
+
+        function populateDates2(e) {
+            days_element2.innerHTML = '';
+            let amount_days2 = 31;
+
+            if (month2 == 1) {
+                amount_days2 = 29;
+            }
+            if (month2 == 3 || month2 == 5 || month2 == 8 || month2 == 10) {
+                amount_days2 = 30;
+            }
+
+            for (let i = 0; i < amount_days2; i++) {
+                const day_element2 = document.createElement('div');
+                day_element2.classList.add('day2');
+                day_element2.textContent = i + 1;
+
+                if (selectedDay2 == (i + 1) && selectedYear2 == year2 && selectedMonth2 == month2) {
+                    day_element2.classList.add('selected');
+                }
+
+                day_element2.addEventListener('click', function () {
+                    selectedDate2 = new Date(year2 + '-' + (month2 + 1) + '-' + (i + 1));
+                    selectedDay2 = (i + 1);
+                    selectedMonth2 = month2;
+                    selectedYear2 = year2;
+
+                    selected_date_element2.textContent = 'Created after:   ' + formatDate(selectedDate2);
+                    selected_date_element2.dataset.value = selectedDate2;
+
+                    populateDates2();
+                });
+
+                days_element2.appendChild(day_element2);
+            }
+            //console.log(formatDate(selectedDate))
+        }
+
+
+        // HELPER FUNCTIONS
+        function checkEventPathForClass(path, selector) {
+            for (let i = 0; i < path.length; i++) {
+                if (path[i].classList && path[i].classList.contains(selector)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function formatDate(d) {
+            let day = d.getDate();
+            if (day < 10) {
+                day = '0' + day;
+            }
+
+            let month = d.getMonth() + 1;
+            if (month < 10) {
+                month = '0' + month;
+            }
+
+            let year = d.getFullYear();
+
+            return day + '-' + month + '-' + year;
+        }
+
+        function refreshPage() {
+            window.location.reload();
+        }
+
+
+    </script>
+</body>
+
+</html>

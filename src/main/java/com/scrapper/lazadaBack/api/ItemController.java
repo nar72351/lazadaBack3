@@ -99,8 +99,8 @@ public class ItemController {
   //http://localhost:8080/
   @CrossOrigin(origins = "*")
   @RequestMapping("/")
-  public String showHome() {
-    return "home";
+  public String showIndex() {
+    return "index";
   }
 
 }

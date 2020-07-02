@@ -28,47 +28,6 @@ public class ItemController {
 //    itemService.writeCode(code);
 //  }
 
-//  //http://localhost:8080/isexpired
-//  @GetMapping("/isexpired")
-//  public boolean getCode2() {
-//    //System.out.println(itemService.isExpired());
-//    return itemService.isExpired();
-//  }
-
-//  //http://localhost:8080/orders
-//  @GetMapping("/orders")
-//  public String getOrders() {
-//    System.out.println("ItemController");
-//    //System.out.println(itemService.isExpired());
-//    return itemService.getOrders();
-//  }
-//  //http://localhost:8080/orders
-//  @GetMapping("/orders")
-//  public String getOrders(HttpServletResponse response) {
-//    System.out.println("ItemController");
-//    response.setHeader("Cache-Control", "no-cache");
-//    //System.out.println(itemService.isExpired());
-//    return itemService.getOrders();
-//  }
-
-//  //http://localhost:8080/orders
-//  @GetMapping("/orders")
-//  public Mono<ResponseEntity<String>> getOrders() {
-//    System.out.println("ItemController");
-//
-//
-//    String responseHeaderKey = "Baeldung-Example-Header";
-//    String responseHeaderValue = "Value-ResponseEntityBuilder";
-//    String responseBody = "Response with header using ResponseEntity (builder)";
-//
-//    return Mono.just(ResponseEntity.ok()
-//            .header(responseHeaderKey, responseHeaderValue)
-//            .body(responseBody));
-//
-//
-//    return itemService.getOrders();
-//  }
-
   //http://localhost:8080/orders
   @CrossOrigin(origins = "*")
   @GetMapping("/orders")
@@ -88,13 +47,6 @@ public class ItemController {
     System.out.println("ItemController: GetOrdersForGivenTime()");
     return itemService.getOrdersForGivenTime(created_before, created_after);
   }
-
-//  //http://localhost:8080/home
-//  @CrossOrigin(origins = "*")
-//  @RequestMapping("/home")
-//  public String showHome() {
-//    return "home";
-//  }
 
   //http://localhost:8080/
   @CrossOrigin(origins = "*")

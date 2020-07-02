@@ -65,6 +65,7 @@
         .menu-general .navbar a:hover {
             background-color: #999;
             color: #313852;
+            cursor: pointer;
         }
 
         .menu-general .navbar a:active {
@@ -379,6 +380,7 @@
             display: block;
             padding: 10px 10px;
             color: black;
+            cursor: pointer;
         }
 
         .dropdown-content a:hover {
@@ -405,12 +407,12 @@
             </a>
         </div>
         <div class="navbar">
-            <a href="#" id="seeNewOrders"> <i class="fas fa-shopping-cart"></i> See Last Orders </a>
-            <a href="#" id="ordersWithTime"> <i class="fas fa-clock"></i> Orders With Time </a>
-            <a href="#"> <i class="fas fa-archive"></i> Check Stock </a>
-            <a href="#"> <i class="fas fa-file-alt"></i> Auto Upload Products </a>
-            <a href="#"> <i class="fas fa-history"></i> History of Activities </a>
-            <a href="#"> <i class="fas fa-cogs"></i> Settings </a>
+            <a role="button" tabindex="0" id="seeNewOrders"> <i class="fas fa-shopping-cart"></i> Pending Orders </a>
+            <a role="button" tabindex="0" id="ordersWithTime"> <i class="fas fa-clock"></i> Orders With Time </a>
+            <a role="button" tabindex="0"> <i class="fas fa-archive"></i> Check Stock </a>
+            <a role="button" tabindex="0"> <i class="fas fa-file-alt"></i> Auto Upload Products </a>
+            <a role="button" tabindex="0"> <i class="fas fa-history"></i> History of Activities </a>
+            <a role="button" tabindex="0"> <i class="fas fa-cogs"></i> Settings </a>
         </div>
     </div>
 
@@ -611,11 +613,10 @@
                  <div class="dropdown">
                     <button class="dropbutton"> Select <i class="fas fa-caret-down"></i></button>
                      <div class="dropdown-content">
-                         <a href="#">Cancel the order</a>
-                         <a href="#">Set invoice number</a>
-                         <a href="#">Mark as being packed</a>
-                         <a href="#">Mark as being ready to ship</a>
-                         <a href="#">Mark as being delivered</a>
+                         <a role="button" tabindex="0" id="cancelTheOrder">Cancel the order</a>
+                         <a role="button" tabindex="0" id="markPacked">Mark as being packed</a>
+                         <a role="button" tabindex="0" id="markReadyToShip">Mark as being ready to ship</a>
+                         <a role="button" tabindex="0" id="markDelivered">Mark as being delivered</a>
                      </div>
                  </div> 
               </td>
@@ -631,39 +632,55 @@
       `;
             }
 
-            // /******/
-            // document.querySelector('.dropdown-content').onclick = function (ev) {
-            //     var index = ev.target.parentElement.parentElement.parentElement.parentElement.index;
-            //     console.log(`index: ${index}`)
-            // }
-
-            let divs = document.getElementsByClassName("dropdown-content");
-            for (let i = 0; i < divs.length; i++) {
-                divs[i].addEventListener("click", function (e) {
-                    let innerText = e.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+            document.querySelectorAll('#cancelTheOrder').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
-                    markAsBeingPacked(id)
+                    cancelTheOrder(id);
+                })
+            })
 
-                    /*   ARA bayc hla pti imanam nayev te inch knopkaya sxmel... vobshem qaqa.....    */
-                });
-            }
+            document.querySelectorAll('#markPacked').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+                    markPacked(id);
+                })
+            })
+
+            document.querySelectorAll('#markReadyToShip').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+                    markReadyToShip(id);
+                })
+            })
+
+            document.querySelectorAll('#markDelivered').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+                    markDelivered(id);
+                })
+            })
+
         }
-
-        function markAsBeingPacked(id) {
-            console.log(`id: ${id}`)
+        function cancelTheOrder(id) {
+            console.log(`cancelTheOrder: ${id}`);
         }
-
-        function stringToHTML(str) {
-            // var parser = new DOMParser();
-            // var doc = parser.parseFromString(str, 'text/html');
-            // return doc.body;
-
-            var dom = document.createElement('div');
-            dom.innerHTML = str;
-            return dom;
+        function markPacked(id) {
+            console.log(`markPacked: ${id}`);
         }
-
+        function markReadyToShip(id) {
+            console.log(`markReadyToShip: ${id}`);
+        }
+        function markDelivered(id) {
+            console.log(`markDelivered: ${id}`);
+        }
 
         let button_my
         ///////////////////////////////////////////////Calendar1111

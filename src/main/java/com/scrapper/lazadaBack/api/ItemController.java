@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Controller
 public class ItemController {
 
@@ -43,9 +42,59 @@ public class ItemController {
   @CrossOrigin(origins = "*")
   @GetMapping(value = "/{created_before}/{created_after}")
   @ResponseBody
-  public String GetOrdersForGivenTime(@PathVariable("created_before") String created_before, @PathVariable("created_after") String created_after) {
+  public String getOrdersForGivenTime(@PathVariable("created_before") String created_before, @PathVariable("created_after") String created_after) {
     System.out.println("ItemController: GetOrdersForGivenTime()");
     return itemService.getOrdersForGivenTime(created_before, created_after);
+  }
+
+  //http://localhost:8080/cancel?id=123-1&value=text1
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/cancel")
+  @ResponseBody
+  public String cancelTheOrder(@RequestParam String id, @RequestParam String value) {
+    System.out.println("ItemController: cancelTheOrder()");
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.CancelTheOrder(id, value);
+  }
+
+  //http://localhost:8080/invoice?id=123-2&value=text2
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/invoice")
+  @ResponseBody
+  public String setInvoiceNumber(@RequestParam String id, @RequestParam String value) {
+    System.out.println("ItemController: setInvoiceNumber()");
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.setInvoiceNumber(id, value);
+  }
+
+  //http://localhost:8080/packed?id=123-3&value=text3
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/packed")
+  @ResponseBody
+  public String markPacked(@RequestParam String id, @RequestParam String value) {
+    System.out.println("ItemController: markPacked()");
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.markPacked(id, value);
+  }
+
+  //http://localhost:8080/delivered?id=123-4&value=text4
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/delivered")
+  @ResponseBody
+  public String markDelivered(@RequestParam String id, @RequestParam String value) {
+    System.out.println("ItemController: markDelivered()");
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.markDelivered(id, value);
+  }
+
+  //http://localhost:8080/ship?id=123-5&value1=text1&value2=text2
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/ship")
+  @ResponseBody
+  public String markReadyToShip(@RequestParam String id, @RequestParam String value1, @RequestParam String value2) {
+    System.out.println("ItemController: markReadyToShip()");
+    System.out.println("Resp: " + id + " " + value1 + " " + value2);
+    return itemService.markReadyToShip(id, value1, value2);
   }
 
   //http://localhost:8080/

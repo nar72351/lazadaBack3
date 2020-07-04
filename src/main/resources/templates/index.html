@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="style.css">
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
     <title>Lazada Admin Dashboard</title>
 
@@ -371,20 +371,20 @@
             position: absolute;
             background-color: #f8f8f8;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            width: 250px;
+            width: 480px;
             z-index: 1;
         }
 
-        .dropdown-content a {
+        .dropdown-content div {
             text-decoration: none;
             display: block;
             padding: 10px 10px;
             color: black;
-            cursor: pointer;
+            /*cursor: pointer;*/
         }
 
-        .dropdown-content a:hover {
-            background-color: #5f73c4;
+        .dropdown-content div:hover {
+            background-color: #becafc;
         }
 
         .dropdown:hover .dropdown-content {
@@ -394,6 +394,46 @@
 
         .dropdown:hover .dropbutton {
             background-color: #5f73c4;
+        }
+
+        .dropdown-content a {
+            background-color: #495cac;
+            border-radius: 2px;
+            color: white;
+            padding: 4px;
+            margin-left: 10px;
+            font-size: 15px;
+            border: none;
+            width: 220px;
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .dropdown-content input {
+            padding: 2px 2px;
+            margin: 2px 0;
+            border: 1px solid rgb(185, 184, 184);
+            border-radius: 4px;
+            height: 25px;
+            width: 210px;
+        }
+
+        .input-container input {
+            display: block;
+            padding: 2px 2px;
+            margin: 2px 0;
+            border: 1px solid rgb(185, 184, 184);
+            border-radius: 4px;
+            height: 25px;
+            width: 210px;
+        }
+
+        .input-container div,
+        a {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
         }
     </style>
 
@@ -612,12 +652,31 @@
               <td> 	 
                  <div class="dropdown">
                     <button class="dropbutton"> Select <i class="fas fa-caret-down"></i></button>
-                     <div class="dropdown-content">
-                         <a role="button" tabindex="0" id="cancelTheOrder">Cancel the order</a>
-                         <a role="button" tabindex="0" id="markPacked">Mark as being packed</a>
-                         <a role="button" tabindex="0" id="markReadyToShip">Mark as being ready to ship</a>
-                         <a role="button" tabindex="0" id="markDelivered">Mark as being delivered</a>
-                     </div>
+                    <div class="dropdown-content">
+                           <div>
+                               <input type="text" id="textbox_reason" placeholder="Type the reason here.">
+                               <a role="button" tabindex="0" id="cancelTheOrder"> Cancel the order</a>
+                           </div>
+                           <div>
+                               <input type="text" id="textbox_invoice" placeholder="Type the invoice number here.">
+                               <a role="button" tabindex="0" id="setInvoiceNumber"> Set Invoice Number</a>
+                           </div>
+                           <div>
+                               <input type="text" id="textbox_shipment1" placeholder="Type the shipment provider here.">
+                               <a role="button" tabindex="0" id="markPacked">Mark as being packed</a>
+                           </div>
+                           <div>
+                               <input type="text" id="textbox_message" placeholder="Type the delivery message here.">
+                               <a role="button" tabindex="0" id="markDelivered">Mark as being delivered</a>
+                           </div>
+                           <div class="input-container">
+                               <div>
+                                   <input type="text" id="textbox_shipment2" placeholder="Type the shipment provider here.">
+                                   <input type="text" id="textbox_tracking" placeholder="Type the tracking number here.">
+                               </div>
+                               <a role="button" tabindex="0" id="markReadyToShip">Mark as being ready to ship</a>
+                           </div>
+                    </div>
                  </div> 
               </td>
               <td>${order_number}</td>
@@ -634,52 +693,114 @@
 
             document.querySelectorAll('#cancelTheOrder').forEach(item => {
                 item.addEventListener('click', event => {
-                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
-                    cancelTheOrder(id);
+
+                    let inputValue = document.getElementById('textbox_reason').value;
+
+                    cancelTheOrder(id, inputValue);
+                })
+            })
+
+            document.querySelectorAll('#setInvoiceNumber').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+
+                    let inputValue = document.getElementById('textbox_invoice').value;
+
+                    setInvoiceNumber(id, inputValue);
                 })
             })
 
             document.querySelectorAll('#markPacked').forEach(item => {
                 item.addEventListener('click', event => {
-                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
-                    markPacked(id);
-                })
-            })
 
-            document.querySelectorAll('#markReadyToShip').forEach(item => {
-                item.addEventListener('click', event => {
-                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
-                    let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
-                    markReadyToShip(id);
+                    let inputValue = document.getElementById('textbox_shipment1').value;
+
+                    markPacked(id, inputValue);
                 })
             })
 
             document.querySelectorAll('#markDelivered').forEach(item => {
                 item.addEventListener('click', event => {
-                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
-                    markDelivered(id);
+
+                    let inputValue = document.getElementById('textbox_message').value;
+
+                    markDelivered(id, inputValue);
                 })
             })
 
+            document.querySelectorAll('#markReadyToShip').forEach(item => {
+                item.addEventListener('click', event => {
+                    let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
+                    let tdList = innerText.split("<td>");
+                    let id = tdList[2].replace("</td>", "").trim();
+
+                    let inputValue1 = document.getElementById('textbox_shipment2').value;
+                    let inputValue2 = document.getElementById('textbox_tracking').value;
+
+                    markReadyToShip(id, inputValue1, inputValue2);
+                })
+            })
         }
-        function cancelTheOrder(id) {
-            console.log(`cancelTheOrder: ${id}`);
+
+        function cancelTheOrder(id, inputValue) {
+            //https://www.oksender.co/cancel?id=123-1&value=text1
+            let reqUrl = `https://www.oksender.co/cancel?id=${id}&value=${inputValue}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
         }
-        function markPacked(id) {
-            console.log(`markPacked: ${id}`);
+
+        function setInvoiceNumber(id, inputValue) {
+            //https://www.oksender.co/invoice?id=123-2&value=text2
+            let reqUrl = `https://www.oksender.co/invoice?id=${id}&value=${inputValue}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
         }
-        function markReadyToShip(id) {
-            console.log(`markReadyToShip: ${id}`);
+
+        function markPacked(id, inputValue) {
+            //https://www.oksender.co/packed?id=123-3&value=text3
+            let reqUrl = `https://www.oksender.co/packed?id=${id}&value=${inputValue}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
         }
-        function markDelivered(id) {
-            console.log(`markDelivered: ${id}`);
+
+        function markDelivered(id, inputValue) {
+            //https://www.oksender.co/delivered?id=123-4&value=text4
+            let reqUrl = `https://www.oksender.co/delivered?id=${id}&value=${inputValue}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
+        }
+
+        function markReadyToShip(id, inputValue1, inputValue2) {
+            //https://www.oksender.co/ship?id=123-5&value1=text1&value2=text2
+            let reqUrl = `https://www.oksender.co/ship?id=${id}&value1=${inputValue1}&value2=${inputValue2}`;
+            console.log(reqUrl)
+
+            axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+                .then(res => console.log(res))
+                .catch(err => console.error(err));
         }
 
         let button_my

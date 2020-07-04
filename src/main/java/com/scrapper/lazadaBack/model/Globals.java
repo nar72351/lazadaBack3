@@ -3,6 +3,7 @@ package com.scrapper.lazadaBack.model;
 import java.util.Date;
 
 public class Globals {
+  public static String restUrl = "https://api.lazada.co.th/rest";
   public static String appKey = "119295";
   public static String appSecret = "nPI7IibeDTPsXoRZr1dBXJquFkfsgEl3";
   public static long expiremilis = 120000l;

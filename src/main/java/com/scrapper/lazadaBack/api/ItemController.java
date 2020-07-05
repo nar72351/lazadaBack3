@@ -1,7 +1,10 @@
 package com.scrapper.lazadaBack.api;
 
+import com.scrapper.lazadaBack.model.Globals;
 import com.scrapper.lazadaBack.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,11 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ItemController {
 
-  //https://www.lazada.com/?code=0_tryzThknf4684883sd5c1d5
-  //http://localhost:8080/?code=0_tryzThknf4684883sd5c1d5
-
   @Autowired
   ItemService itemService;
+
+  @EventListener(ApplicationReadyEvent.class)
+  public void doSomethingAfterStartup() {
+    Globals.init();
+  }
+
 
 //  @RequestMapping("/")
 //  public void getCode1(@RequestParam("code") String code) {
@@ -52,20 +58,20 @@ public class ItemController {
   @CrossOrigin(origins = "*")
   @RequestMapping("/cancel")
   @ResponseBody
-  public String cancelTheOrder(@RequestParam String  id, @RequestParam String value) {
+  public String cancelTheOrder(@RequestParam String id, @RequestParam String value) {
     System.out.println("ItemController: cancelTheOrder()");
-    System.out.println("Resp: " +  id + " " + value);
-    return itemService.cancelTheOrder( id, value);
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.cancelTheOrder(id, value);
   }
 
   //http://localhost:8080/invoice?id=123-2&value=text2
   @CrossOrigin(origins = "*")
   @RequestMapping("/invoice")
   @ResponseBody
-  public String setInvoiceNumber(@RequestParam String  id, @RequestParam String value) {
+  public String setInvoiceNumber(@RequestParam String id, @RequestParam String value) {
     System.out.println("ItemController: setInvoiceNumber()");
-    System.out.println("Resp: " +  id + " " + value);
-    return itemService.setInvoiceNumber( id, value);
+    System.out.println("Resp: " + id + " " + value);
+    return itemService.setInvoiceNumber(id, value);
   }
 
   //http://localhost:8080/packed?id=123-3&value=text3

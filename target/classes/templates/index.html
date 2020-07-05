@@ -646,6 +646,10 @@
                 let status = eachObj.statuses[0];
                 let warehouse_code = eachObj.warehouse_code;
 
+                if (status === "delivered" || status === "canceled") {
+                    continue;
+                }
+
                 document.querySelector('.details tbody').innerHTML += `
             <tr>
               <td> 	 
@@ -1026,6 +1030,7 @@
             //console.log(formatDate(selectedDate))
         }
 
+
         // HELPER FUNCTIONS
         function checkEventPathForClass(path, selector) {
             for (let i = 0; i < path.length; i++) {
@@ -1055,7 +1060,6 @@
         function refreshPage() {
             window.location.reload();
         }
-
 
     </script>
 </body>

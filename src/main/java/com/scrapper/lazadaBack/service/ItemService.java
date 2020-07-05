@@ -1,5 +1,6 @@
 package com.scrapper.lazadaBack.service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -161,7 +162,7 @@ public class ItemService {
   }
 
 
-  public String CancelTheOrder(String id, String value) {
+  public String cancelTheOrder(String order_id, String value) {
     String responseStr = "";
 
     try {
@@ -171,14 +172,17 @@ public class ItemService {
       System.out.println("refresh_token: " + refresh_token);
       String accessToken = gerRefreshedAccessToken(refresh_token);
       System.out.println("accessToken: " + accessToken);
-
+      ////////////////
+      String OrderItemsJson = GetOrderItems(order_id, accessToken);
+      String item_id = getItemIdFromJson(OrderItemsJson);
+      System.out.println("cancelTheOrder is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/order/cancel");
       request.addApiParameter("reason_detail", value);
       request.addApiParameter("reason_id", "15");
-      request.addApiParameter("order_item_id", id);
+      request.addApiParameter("order_item_id", item_id);
       LazopResponse response = client.execute(request, accessToken);
       responseStr = response.getBody();
 
@@ -191,7 +195,7 @@ public class ItemService {
     return responseStr;
   }
 
-  public String setInvoiceNumber(String id, String value) {
+  public String setInvoiceNumber(String order_id, String value) {
     String responseStr = "";
 
     try {
@@ -201,12 +205,15 @@ public class ItemService {
       System.out.println("refresh_token: " + refresh_token);
       String accessToken = gerRefreshedAccessToken(refresh_token);
       System.out.println("accessToken: " + accessToken);
-
+      ////////////////
+      String OrderItemsJson = GetOrderItems(order_id, accessToken);
+      String item_id = getItemIdFromJson(OrderItemsJson);
+      System.out.println("setInvoiceNumber is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/order/invoice_number/set");
-      request.addApiParameter("order_item_id", id);
+      request.addApiParameter("order_item_id", item_id);
       request.addApiParameter("invoice_number", value);
       LazopResponse response = client.execute(request, accessToken);
       responseStr = response.getBody();
@@ -220,9 +227,10 @@ public class ItemService {
     return responseStr;
   }
 
-  public String markPacked(String id, String value) {
+
+  public String markPacked(String order_id, String value) {
     String responseStr = "";
-    String order_item_ids = "[" + id + "]";
+
     try {
       File file = new File("refreshToken.txt");
       List<String> list = readFile(file);
@@ -230,7 +238,11 @@ public class ItemService {
       System.out.println("refresh_token: " + refresh_token);
       String accessToken = gerRefreshedAccessToken(refresh_token);
       System.out.println("accessToken: " + accessToken);
-
+      ////////////////
+      String OrderItemsJson = GetOrderItems(order_id, accessToken);
+      String item_id = getItemIdFromJson(OrderItemsJson);
+      String order_item_ids = "[" + item_id + "]";
+      System.out.println("markPacked is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
@@ -250,10 +262,9 @@ public class ItemService {
     return responseStr;
   }
 
-  public String markDelivered(String id, String value) {
+  public String markDelivered(String order_id, String value) {
     String responseStr = "";
 
-    String order_item_ids = "[" + id + "]";
     try {
       File file = new File("refreshToken.txt");
       List<String> list = readFile(file);
@@ -261,7 +272,11 @@ public class ItemService {
       System.out.println("refresh_token: " + refresh_token);
       String accessToken = gerRefreshedAccessToken(refresh_token);
       System.out.println("accessToken: " + accessToken);
-
+      ////////////////
+      String OrderItemsJson = GetOrderItems(order_id, accessToken);
+      String item_id = getItemIdFromJson(OrderItemsJson);
+      String order_item_ids = "[" + item_id + "]";
+      System.out.println("markDelivered is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
@@ -279,10 +294,9 @@ public class ItemService {
     return responseStr;
   }
 
-  public String markReadyToShip(String id, String value1, String value2) {
+  public String markReadyToShip(String order_id, String value1, String value2) {
     String responseStr = "";
 
-    String order_item_ids = "[" + id + "]";
     try {
       File file = new File("refreshToken.txt");
       List<String> list = readFile(file);
@@ -290,7 +304,11 @@ public class ItemService {
       System.out.println("refresh_token: " + refresh_token);
       String accessToken = gerRefreshedAccessToken(refresh_token);
       System.out.println("accessToken: " + accessToken);
-
+      ////////////////
+      String OrderItemsJson = GetOrderItems(order_id, accessToken);
+      String item_id = getItemIdFromJson(OrderItemsJson);
+      String order_item_ids = "[" + item_id + "]";
+      System.out.println("markReadyToShip is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
@@ -311,12 +329,43 @@ public class ItemService {
     return responseStr;
   }
 
-  private String getSTRING(JsonObject Obj, String str) {
-    String result = "";
-    if (Obj.get(str) != null && !Obj.get(str).isJsonNull()) {
-      result = Obj.get(str).getAsString();
+  private String GetOrderItems(String order_id, String accessToken) {
+    String OrderItemsJson = "";
+    try {
+      LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
+      LazopRequest request = new LazopRequest();
+      request.setApiName("/order/items/get");
+      request.setHttpMethod("GET");
+      request.addApiParameter("order_id", order_id);
+      LazopResponse response = client.execute(request, accessToken);
+      OrderItemsJson = response.getBody();
+      Thread.sleep(10);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    return result;
+    return OrderItemsJson;
+  }
+
+  private String getItemIdFromJson(String jsonContent) {
+    String item_id = "";
+    try {
+      if (jsonContent != null) {
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(jsonContent);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+        JsonArray dataArray = getARRAY(jsonObject, "data");
+
+        if (dataArray.size() > 0) {
+          JsonObject firstObject = dataArray.get(0).getAsJsonObject();
+          item_id = getSTRING(firstObject, "order_item_id");
+          System.out.println("item_id: " + item_id);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return item_id;
   }
 
   private static List readFile(File file) {
@@ -332,6 +381,32 @@ public class ItemService {
       e.printStackTrace();
     }
     return lines;
+  }
+
+  private String getSTRING(JsonObject Obj, String str) {
+    String result = "";
+    if (Obj.get(str) != null && !Obj.get(str).isJsonNull()) {
+      result = Obj.get(str).getAsString();
+    }
+    return result;
+  }
+
+  private JsonObject getOBJECT(JsonObject jsonObject, String str) {
+    JsonObject object = null;
+
+    if (!jsonObject.get(str).isJsonNull()) {
+      object = jsonObject.getAsJsonObject(str);
+    }
+    return object;
+  }
+
+  private JsonArray getARRAY(JsonObject jsonObject, String str) {
+    JsonArray array = null;
+
+    if (!jsonObject.get(str).isJsonNull()) {
+      array = jsonObject.getAsJsonArray(str);
+    }
+    return array;
   }
 //  public boolean writeCode(String code) {
 //    boolean itFinished = false;

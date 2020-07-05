@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
     <title>Lazada Admin Dashboard</title>
 
@@ -658,7 +657,7 @@
                                <a role="button" tabindex="0" id="cancelTheOrder"> Cancel the order</a>
                            </div>
                            <div>
-                               <input type="text" id="textbox_invoice" placeholder="Type the invoice number here.">
+                               <input type="text"  id="textbox_invoice" placeholder="Type the invoice number here.">
                                <a role="button" tabindex="0" id="setInvoiceNumber"> Set Invoice Number</a>
                            </div>
                            <div>
@@ -697,7 +696,9 @@
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
 
-                    let inputValue = document.getElementById('textbox_reason').value;
+                    //let inputValue = document.getElementById('textbox_reason').value;
+
+                    let inputValue = event.target.parentElement.querySelector('#textbox_reason').value;
 
                     cancelTheOrder(id, inputValue);
                 })
@@ -709,7 +710,7 @@
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
 
-                    let inputValue = document.getElementById('textbox_invoice').value;
+                    let inputValue = event.target.parentElement.querySelector('#textbox_invoice').value;
 
                     setInvoiceNumber(id, inputValue);
                 })
@@ -721,7 +722,7 @@
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
 
-                    let inputValue = document.getElementById('textbox_shipment1').value;
+                    let inputValue = event.target.parentElement.querySelector('#textbox_shipment1').value;
 
                     markPacked(id, inputValue);
                 })
@@ -733,7 +734,7 @@
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
 
-                    let inputValue = document.getElementById('textbox_message').value;
+                    let inputValue = event.target.parentElement.querySelector('#textbox_message').value;
 
                     markDelivered(id, inputValue);
                 })
@@ -745,8 +746,8 @@
                     let tdList = innerText.split("<td>");
                     let id = tdList[2].replace("</td>", "").trim();
 
-                    let inputValue1 = document.getElementById('textbox_shipment2').value;
-                    let inputValue2 = document.getElementById('textbox_tracking').value;
+                    let inputValue1 = event.target.parentElement.querySelector('#textbox_shipment2').value;
+                    let inputValue2 = event.target.parentElement.querySelector('#textbox_tracking').value;
 
                     markReadyToShip(id, inputValue1, inputValue2);
                 })
@@ -759,7 +760,17 @@
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(res => console.log(res))
+                .then(function (res) {
+                    let dataObj = res.data;
+                    let message = dataObj.message;
+
+                    if (typeof message === "undefined") {
+                        console.log("SUCCESS");
+                    } else {
+                        console.log("FAILURE");
+                        alert(message);
+                    }
+                })
                 .catch(err => console.error(err));
         }
 
@@ -769,7 +780,17 @@
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(res => console.log(res))
+                .then(function (res) {
+                    let dataObj = res.data;
+                    let message = dataObj.message;
+
+                    if (typeof message === "undefined") {
+                        console.log("SUCCESS");
+                    } else {
+                        console.log("FAILURE");
+                        alert(message);
+                    }
+                })
                 .catch(err => console.error(err));
         }
 
@@ -779,7 +800,17 @@
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(res => console.log(res))
+                .then(function (res) {
+                    let dataObj = res.data;
+                    let message = dataObj.message;
+
+                    if (typeof message === "undefined") {
+                        console.log("SUCCESS");
+                    } else {
+                        console.log("FAILURE");
+                        alert(message);
+                    }
+                })
                 .catch(err => console.error(err));
         }
 
@@ -789,7 +820,17 @@
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(res => console.log(res))
+                .then(function (res) {
+                    let dataObj = res.data;
+                    let message = dataObj.message;
+
+                    if (typeof message === "undefined") {
+                        console.log("SUCCESS");
+                    } else {
+                        console.log("FAILURE");
+                        alert(message);
+                    }
+                })
                 .catch(err => console.error(err));
         }
 
@@ -799,7 +840,17 @@
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
-                .then(res => console.log(res))
+                .then(function (res) {
+                    let dataObj = res.data;
+                    let message = dataObj.message;
+
+                    if (typeof message === "undefined") {
+                        console.log("SUCCESS");
+                    } else {
+                        console.log("FAILURE");
+                        alert(message);
+                    }
+                })
                 .catch(err => console.error(err));
         }
 
@@ -974,7 +1025,6 @@
             }
             //console.log(formatDate(selectedDate))
         }
-
 
         // HELPER FUNCTIONS
         function checkEventPathForClass(path, selector) {

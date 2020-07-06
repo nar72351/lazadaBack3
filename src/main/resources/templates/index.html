@@ -564,16 +564,6 @@
             prev_mth_element2.addEventListener('click', goToPrevMonth2);
         }
 
-        function seeNewOrders() {
-            console.log("seeNewOrders()");
-
-            axios.get('https://www.oksender.co/orders', {
-                headers: { "Access-Control-Allow-Origin": "*" }
-            })
-                .then(res => showOutput1(res))
-                .catch(err => console.error(err));
-        }
-
 
         function showOrders() {
             console.log("showOrders()");
@@ -602,28 +592,34 @@
                 .catch(err => console.error(err));
         }
 
+
+        function seeNewOrders() {
+            console.log("seeNewOrders()");
+
+            axios.get('https://www.oksender.co/orders', {
+                headers: { "Access-Control-Allow-Origin": "*" }
+            })
+                .then(res => showOutput1(res))
+                .catch(err => console.error(err));
+        }
+
+
         // Show output in browser
         function showOutput1(res) {
             console.log(res);
-
-            let data = res.data;
-            let dataObj = data.data;
-            let ordersArray = dataObj.orders;
-
-            console.log(`length: ${ordersArray.length}`);
-
 
             document.getElementById('details').innerHTML = `
         <table id="table" class="table">
           <thead>
            <tr>
               <th>Options</th>
-              <th>Order No.</th>
-              <th>Order Date</th>
-              <th>Price</th>
-              <th>Shipping Fee</th>
-              <th>Payment Method</th>
-              <th>Items Count</th>
+              <th>Account</th>
+              <th>OrderId</th>
+              <th>Date</th>
+              <th>Price ฿</th>
+              <th>Ship ฿</th>
+              <th>Payment</th>
+              <th>Count</th>
               <th>Status</th>
               <th>Warehouse</th>
            </tr>
@@ -634,24 +630,35 @@
         </table>
       `;
 
-            for (let i = 0; i < ordersArray.length; i++) {
-                let eachObj = ordersArray[i];
+            let jsonArray = res.data;
+            console.log(`jsonArray: ${jsonArray.length}`);
 
-                let order_number = eachObj.order_number;
-                let created_at = eachObj.created_at;
-                var createDate = created_at.slice(0, 20);
-                let price = eachObj.price;
-                let payment_method = eachObj.payment_method;
-                let shipping_fee = eachObj.shipping_fee;
-                let items_count = eachObj.items_count;
-                let status = eachObj.statuses[0];
-                let warehouse_code = eachObj.warehouse_code;
+            for (let e = 0; e < jsonArray.length; e++) {
+                let eachJson = jsonArray[e];
 
-                if (status === "delivered" || status === "canceled") {
-                    continue;
-                }
+                let email_address = eachJson.email_address;
+                let dataObj = eachJson.data;
+                let ordersArray = dataObj.orders;
+                console.log(`length: ${ordersArray.length}`);
 
-                document.querySelector('.details tbody').innerHTML += `
+                for (let i = 0; i < ordersArray.length; i++) {
+                    let eachObj = ordersArray[i];
+
+                    let order_number = eachObj.order_number;
+                    let created_at = eachObj.created_at;
+                    var createDate = created_at.slice(0, 20);
+                    let price = eachObj.price;
+                    let payment_method = eachObj.payment_method;
+                    let shipping_fee = eachObj.shipping_fee;
+                    let items_count = eachObj.items_count;
+                    let status = eachObj.statuses[0];
+                    let warehouse_code = eachObj.warehouse_code;
+
+                    if (status === "delivered" || status === "canceled") {
+                        continue;
+                    }
+
+                    document.querySelector('.details tbody').innerHTML += `
             <tr>
               <td> 	 
                  <div class="dropdown">
@@ -683,6 +690,7 @@
                     </div>
                  </div> 
               </td>
+              <td>${email_address}</td>
               <td>${order_number}</td>
               <td>${createDate}</td>
               <td>${price}</td>
@@ -693,19 +701,21 @@
               <td>${warehouse_code}</td>
            </tr>
       `;
+                }
             }
 
             document.querySelectorAll('#cancelTheOrder').forEach(item => {
                 item.addEventListener('click', event => {
                     let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
+                    let email = tdList[2].replace("</td>", "").trim();
+                    let id = tdList[3].replace("</td>", "").trim();
 
                     //let inputValue = document.getElementById('textbox_reason').value;
 
                     let inputValue = event.target.parentElement.querySelector('#textbox_reason').value;
 
-                    cancelTheOrder(id, inputValue);
+                    cancelTheOrder(id, email, inputValue);
                 })
             })
 
@@ -713,11 +723,12 @@
                 item.addEventListener('click', event => {
                     let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
+                    let email = tdList[2].replace("</td>", "").trim();
+                    let id = tdList[3].replace("</td>", "").trim();
 
                     let inputValue = event.target.parentElement.querySelector('#textbox_invoice').value;
 
-                    setInvoiceNumber(id, inputValue);
+                    setInvoiceNumber(id, email, inputValue);
                 })
             })
 
@@ -725,11 +736,12 @@
                 item.addEventListener('click', event => {
                     let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
+                    let email = tdList[2].replace("</td>", "").trim();
+                    let id = tdList[3].replace("</td>", "").trim();
 
                     let inputValue = event.target.parentElement.querySelector('#textbox_shipment1').value;
 
-                    markPacked(id, inputValue);
+                    markPacked(id, email, inputValue);
                 })
             })
 
@@ -737,11 +749,12 @@
                 item.addEventListener('click', event => {
                     let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
+                    let email = tdList[2].replace("</td>", "").trim();
+                    let id = tdList[3].replace("</td>", "").trim();
 
                     let inputValue = event.target.parentElement.querySelector('#textbox_message').value;
 
-                    markDelivered(id, inputValue);
+                    markDelivered(id, email, inputValue);
                 })
             })
 
@@ -749,19 +762,20 @@
                 item.addEventListener('click', event => {
                     let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
                     let tdList = innerText.split("<td>");
-                    let id = tdList[2].replace("</td>", "").trim();
+                    let email = tdList[2].replace("</td>", "").trim();
+                    let id = tdList[3].replace("</td>", "").trim();
 
                     let inputValue1 = event.target.parentElement.querySelector('#textbox_shipment2').value;
                     let inputValue2 = event.target.parentElement.querySelector('#textbox_tracking').value;
 
-                    markReadyToShip(id, inputValue1, inputValue2);
+                    markReadyToShip(id, email, inputValue1, inputValue2);
                 })
             })
         }
 
-        function cancelTheOrder(id, inputValue) {
-            //https://www.oksender.co/cancel?id=123-1&value=text1
-            let reqUrl = `https://www.oksender.co/cancel?id=${id}&value=${inputValue}`;
+        function cancelTheOrder(id, email, inputValue) {
+            //https://www.oksender.co/cancel?id=123-1&email=email1&value=text1
+            let reqUrl = `https://www.oksender.co/cancel?id=${id}&email=${email}&value=${inputValue}`;
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
@@ -779,9 +793,9 @@
                 .catch(err => console.error(err));
         }
 
-        function setInvoiceNumber(id, inputValue) {
-            //https://www.oksender.co/invoice?id=123-2&value=text2
-            let reqUrl = `https://www.oksender.co/invoice?id=${id}&value=${inputValue}`;
+        function setInvoiceNumber(id, email, inputValue) {
+            //https://www.oksender.co/invoice?id=123-2&email=email2&value=text2
+            let reqUrl = `https://www.oksender.co/invoice?id=${id}&email=${email}&value=${inputValue}`;
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
@@ -799,9 +813,9 @@
                 .catch(err => console.error(err));
         }
 
-        function markPacked(id, inputValue) {
-            //https://www.oksender.co/packed?id=123-3&value=text3
-            let reqUrl = `https://www.oksender.co/packed?id=${id}&value=${inputValue}`;
+        function markPacked(id, email, inputValue) {
+            //https://www.oksender.co/packed?id=123-3&email=email3&value=text3
+            let reqUrl = `https://www.oksender.co/packed?id=${id}&email=${email}&value=${inputValue}`;
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
@@ -819,9 +833,9 @@
                 .catch(err => console.error(err));
         }
 
-        function markDelivered(id, inputValue) {
-            //https://www.oksender.co/delivered?id=123-4&value=text4
-            let reqUrl = `https://www.oksender.co/delivered?id=${id}&value=${inputValue}`;
+        function markDelivered(id, email, inputValue) {
+            //https://www.oksender.co/delivered?id=123-4&email=email4&value=text4
+            let reqUrl = `https://www.oksender.co/delivered?id=${id}&email=${email}&value=${inputValue}`;
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
@@ -839,9 +853,9 @@
                 .catch(err => console.error(err));
         }
 
-        function markReadyToShip(id, inputValue1, inputValue2) {
-            //https://www.oksender.co/ship?id=123-5&value1=text1&value2=text2
-            let reqUrl = `https://www.oksender.co/ship?id=${id}&value1=${inputValue1}&value2=${inputValue2}`;
+        function markReadyToShip(id, email, inputValue1, inputValue2) {
+            //https://www.oksender.co/ship?id=123-5&email=email5&value1=text1&value2=text2
+            let reqUrl = `https://www.oksender.co/ship?id=${id}&email=${email}&value1=${inputValue1}&value2=${inputValue2}`;
             console.log(reqUrl)
 
             axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
@@ -1061,6 +1075,7 @@
         function refreshPage() {
             window.location.reload();
         }
+
 
 
     </script>

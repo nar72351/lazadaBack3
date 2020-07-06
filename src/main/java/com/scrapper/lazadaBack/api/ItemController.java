@@ -17,7 +17,7 @@ public class ItemController {
 
   @EventListener(ApplicationReadyEvent.class)
   public void doSomethingAfterStartup() {
-    Globals.init();
+    Globals.initTokens();
   }
 
 
@@ -53,55 +53,54 @@ public class ItemController {
     return itemService.getOrdersForGivenTime(created_before, created_after);
   }
 
-  //http://localhost:8080/cancel?id=123-1&value=text1
-  //http://localhost:8080/cancel?id=309878338714916&value=Ended
+  //http://localhost:8080/cancel?id=123-1&email=email1&value=text1
   @CrossOrigin(origins = "*")
   @RequestMapping("/cancel")
   @ResponseBody
-  public String cancelTheOrder(@RequestParam String id, @RequestParam String value) {
+  public String cancelTheOrder(@RequestParam String id, @RequestParam String email, @RequestParam String value) {
     System.out.println("ItemController: cancelTheOrder()");
-    System.out.println("Resp: " + id + " " + value);
-    return itemService.cancelTheOrder(id, value);
+    System.out.println("Resp: " + id + " - " + email + " - " + value);
+    return itemService.cancelTheOrder(id, email, value);
   }
 
-  //http://localhost:8080/invoice?id=123-2&value=text2
+  //http://localhost:8080/invoice?id=123-2&email=email1&value=text2
   @CrossOrigin(origins = "*")
   @RequestMapping("/invoice")
   @ResponseBody
-  public String setInvoiceNumber(@RequestParam String id, @RequestParam String value) {
+  public String setInvoiceNumber(@RequestParam String id, @RequestParam String email, @RequestParam String value) {
     System.out.println("ItemController: setInvoiceNumber()");
-    System.out.println("Resp: " + id + " " + value);
-    return itemService.setInvoiceNumber(id, value);
+    System.out.println("Resp: " + id + " - " + email + " - " + value);
+    return itemService.setInvoiceNumber(id, email, value);
   }
 
-  //http://localhost:8080/packed?id=123-3&value=text3
+  //http://localhost:8080/packed?id=123-3&email=email1&value=text3
   @CrossOrigin(origins = "*")
   @RequestMapping("/packed")
   @ResponseBody
-  public String markPacked(@RequestParam String id, @RequestParam String value) {
+  public String markPacked(@RequestParam String id, @RequestParam String email, @RequestParam String value) {
     System.out.println("ItemController: markPacked()");
-    System.out.println("Resp: " + id + " " + value);
-    return itemService.markPacked(id, value);
+    System.out.println("Resp: " + id + " - " + email + " - " + value);
+    return itemService.markPacked(id, email, value);
   }
 
-  //http://localhost:8080/delivered?id=123-4&value=text4
+  //http://localhost:8080/delivered?id=123-4&email=email1&value=text4
   @CrossOrigin(origins = "*")
   @RequestMapping("/delivered")
   @ResponseBody
-  public String markDelivered(@RequestParam String id, @RequestParam String value) {
+  public String markDelivered(@RequestParam String id, @RequestParam String email, @RequestParam String value) {
     System.out.println("ItemController: markDelivered()");
-    System.out.println("Resp: " + id + " " + value);
-    return itemService.markDelivered(id, value);
+    System.out.println("Resp: " + id + " - " + email + " - " + value);
+    return itemService.markDelivered(id, email, value);
   }
 
-  //http://localhost:8080/ship?id=123-5&value1=text1&value2=text2
+  //http://localhost:8080/ship?id=123-5&email=email1&value1=text1&value2=text2
   @CrossOrigin(origins = "*")
   @RequestMapping("/ship")
   @ResponseBody
-  public String markReadyToShip(@RequestParam String id, @RequestParam String value1, @RequestParam String value2) {
+  public String markReadyToShip(@RequestParam String id, @RequestParam String email, @RequestParam String value1, @RequestParam String value2) {
     System.out.println("ItemController: markReadyToShip()");
-    System.out.println("Resp: " + id + " " + value1 + " " + value2);
-    return itemService.markReadyToShip(id, value1, value2);
+    System.out.println("Resp: " + id + " - " + email + " - " + value1 + " - " + value2);
+    return itemService.markReadyToShip(id, email, value1, value2);
   }
 
   //http://localhost:8080/

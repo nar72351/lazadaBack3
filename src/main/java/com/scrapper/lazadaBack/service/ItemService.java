@@ -58,7 +58,7 @@ public class ItemService {
 //      request.addApiParameter("update_before", "2012-02-10T16:00:00+08:00");
 //      request.addApiParameter("sort_direction", "DESC");
       request.addApiParameter("offset", "0");
-      request.addApiParameter("limit", "10");
+//      request.addApiParameter("limit", "100");
 //      request.addApiParameter("update_after", "2017-02-10T09:00:00+08:00");
 //      request.addApiParameter("sort_by", "updated_at");
       LazopResponse response = client.execute(request, access_token);

@@ -64,7 +64,7 @@ public class ItemService {
       LazopResponse response = client.execute(request, access_token);
       //System.out.println(response.getBody());
       orders = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       e.printStackTrace();
       orders = "ERROR_TRY_AGAIN";
@@ -128,7 +128,7 @@ public class ItemService {
       //request.addApiParameter("sort_by", "updated_at");
       LazopResponse response = client.execute(request, access_token);
       ordersForGivenTime = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       ordersForGivenTime = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in GetOrdersForGivenTime()");
@@ -163,7 +163,7 @@ public class ItemService {
       request.addApiParameter("order_item_id", item_id);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in CancelTheOrder()");
@@ -198,7 +198,7 @@ public class ItemService {
       request.addApiParameter("invoice_number", value);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in setInvoiceNumber()");
@@ -235,7 +235,7 @@ public class ItemService {
       request.addApiParameter("order_item_ids", order_item_ids);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markPacked()");
@@ -270,7 +270,7 @@ public class ItemService {
       request.addApiParameter("order_item_ids", order_item_ids);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markDelivered()");
@@ -309,7 +309,7 @@ public class ItemService {
       request.addApiParameter("tracking_number", value2);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markReadyToShip()");
@@ -340,7 +340,7 @@ public class ItemService {
       request.addApiParameter("order_id", order_id);
       LazopResponse response = client.execute(request, access_token);
       OrderItemsJson = response.getBody();
-      Thread.sleep(500);
+      Thread.sleep(700);
     } catch (Exception e) {
       e.printStackTrace();
     }

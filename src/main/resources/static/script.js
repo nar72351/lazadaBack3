@@ -116,11 +116,11 @@ function showOrders() {
         .catch(err => console.error(err));
 }
 
-
 function seeNewOrders() {
     console.log("seeNewOrders()");
 
     axios.get('https://www.oksender.co/orders', {
+        timeout: 1000 * 50,
         headers: { "Access-Control-Allow-Origin": "*" }
     })
         .then(res => showOutput1(res))
@@ -185,7 +185,7 @@ function showOutput1(res) {
             document.querySelector('.details tbody').innerHTML += `
             <tr>
               <td> 	 
-               <button class="dropbutton" data-modal-target="#modal">Order Details </button>
+               <button class="dropbutton" data-modal-target="#modal">Details</button>
                 <div class="modal" id="modal">
                   <div class="modal-header">
                     <div class="title">Order Item Details</div>

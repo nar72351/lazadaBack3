@@ -64,7 +64,7 @@ public class ItemService {
       LazopResponse response = client.execute(request, access_token);
       //System.out.println(response.getBody());
       orders = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       e.printStackTrace();
       orders = "ERROR_TRY_AGAIN";
@@ -128,7 +128,7 @@ public class ItemService {
       //request.addApiParameter("sort_by", "updated_at");
       LazopResponse response = client.execute(request, access_token);
       ordersForGivenTime = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       ordersForGivenTime = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in GetOrdersForGivenTime()");
@@ -136,23 +136,23 @@ public class ItemService {
     return ordersForGivenTime;
   }
 
-  public String cancelTheOrder(String order_id, String email, String value) {
+  public String cancelTheOrder(String item_id, String email, String value) {
     String responseStr = "";
     try {
       String access_token = Globals.tokenMap.get(email).get(1);
-      responseStr = cancelTheOrderLazada(access_token, order_id, value);
+      responseStr = cancelTheOrderLazada(access_token, item_id, value);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return responseStr;
   }
 
-  public String cancelTheOrderLazada(String access_token, String order_id, String value) {
+  public String cancelTheOrderLazada(String access_token, String item_id, String value) {
     String responseStr = "";
 
     try {
-      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
-      String item_id = getItemIdFromJson(OrderItemsJson);
+//      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
+//      String item_id = getItemIdFromJson(OrderItemsJson);
       System.out.println("cancelTheOrder is called for - " + item_id);
       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
@@ -163,7 +163,7 @@ public class ItemService {
       request.addApiParameter("order_item_id", item_id);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in CancelTheOrder()");
@@ -172,25 +172,25 @@ public class ItemService {
     return responseStr;
   }
 
-  public String setInvoiceNumber(String order_id, String email, String value) {
+  public String setInvoiceNumber(String item_id, String email, String value) {
     String responseStr = "";
     try {
       String access_token = Globals.tokenMap.get(email).get(1);
-      responseStr = setInvoiceNumberLazada(access_token, order_id, value);
+      responseStr = setInvoiceNumberLazada(access_token, item_id, value);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return responseStr;
   }
 
-  public String setInvoiceNumberLazada(String access_token, String order_id, String value) {
+  public String setInvoiceNumberLazada(String access_token, String item_id, String value) {
     String responseStr = "";
 
     try {
-      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
-      String item_id = getItemIdFromJson(OrderItemsJson);
-      System.out.println("setInvoiceNumber is called for - " + item_id);
-      ////////////////
+//      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
+//      String item_id = getItemIdFromJson(OrderItemsJson);
+       System.out.println("setInvoiceNumber is called for - " + item_id);
+       ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/order/invoice_number/set");
@@ -198,7 +198,7 @@ public class ItemService {
       request.addApiParameter("invoice_number", value);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in setInvoiceNumber()");
@@ -207,23 +207,23 @@ public class ItemService {
     return responseStr;
   }
 
-  public String markPacked(String order_id, String email, String value) {
+  public String markPacked(String item_id, String email, String value) {
     String responseStr = "";
     try {
       String access_token = Globals.tokenMap.get(email).get(1);
-      responseStr = markPackedLazada(access_token, order_id, value);
+      responseStr = markPackedLazada(access_token, item_id, value);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return responseStr;
   }
 
-  public String markPackedLazada(String access_token, String order_id, String value) {
+  public String markPackedLazada(String access_token, String item_id, String value) {
     String responseStr = "";
 
     try {
-      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
-      String item_id = getItemIdFromJson(OrderItemsJson);
+//      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
+//      String item_id = getItemIdFromJson(OrderItemsJson);
       String order_item_ids = "[" + item_id + "]";
       System.out.println("markPacked is called for - " + item_id);
       ////////////////
@@ -235,7 +235,7 @@ public class ItemService {
       request.addApiParameter("order_item_ids", order_item_ids);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markPacked()");
@@ -244,23 +244,23 @@ public class ItemService {
     return responseStr;
   }
 
-  public String markDelivered(String order_id, String email, String value) {
+  public String markDelivered(String item_id, String email, String value) {
     String responseStr = "";
     try {
       String access_token = Globals.tokenMap.get(email).get(1);
-      responseStr = markDeliveredLazada(access_token, order_id, value);
+      responseStr = markDeliveredLazada(access_token, item_id, value);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return responseStr;
   }
 
-  public String markDeliveredLazada(String access_token, String order_id, String value) {
+  public String markDeliveredLazada(String access_token, String item_id, String value) {
     String responseStr = "";
 
     try {
-      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
-      String item_id = getItemIdFromJson(OrderItemsJson);
+//      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
+//      String item_id = getItemIdFromJson(OrderItemsJson);
       String order_item_ids = "[" + item_id + "]";
       System.out.println("markDelivered is called for - " + item_id);
       ////////////////
@@ -270,7 +270,7 @@ public class ItemService {
       request.addApiParameter("order_item_ids", order_item_ids);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markDelivered()");
@@ -280,23 +280,23 @@ public class ItemService {
   }
 
 
-  public String markReadyToShip(String order_id, String email, String value1, String value2) {
+  public String markReadyToShip(String item_id, String email, String value1, String value2) {
     String responseStr = "";
     try {
       String access_token = Globals.tokenMap.get(email).get(1);
-      responseStr = markReadyToShipLazada(access_token, order_id, value1, value2);
+      responseStr = markReadyToShipLazada(access_token, item_id, value1, value2);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return responseStr;
   }
 
-  public String markReadyToShipLazada(String access_token, String order_id, String value1, String value2) {
+  public String markReadyToShipLazada(String access_token, String item_id, String value1, String value2) {
     String responseStr = "";
 
     try {
-      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
-      String item_id = getItemIdFromJson(OrderItemsJson);
+//      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
+//      String item_id = getItemIdFromJson(OrderItemsJson);
       String order_item_ids = "[" + item_id + "]";
       System.out.println("markReadyToShip is called for - " + item_id);
       ////////////////
@@ -309,7 +309,7 @@ public class ItemService {
       request.addApiParameter("tracking_number", value2);
       LazopResponse response = client.execute(request, access_token);
       responseStr = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       responseStr = "ERROR_TRY_AGAIN";
       System.out.println("ERROR in markReadyToShip()");
@@ -340,7 +340,7 @@ public class ItemService {
       request.addApiParameter("order_id", order_id);
       LazopResponse response = client.execute(request, access_token);
       OrderItemsJson = response.getBody();
-      Thread.sleep(300);
+      Thread.sleep(500);
     } catch (Exception e) {
       e.printStackTrace();
     }

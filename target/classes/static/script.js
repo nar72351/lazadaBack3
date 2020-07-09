@@ -136,12 +136,12 @@ function showOutput1(res) {
         <table id="table" class="table">
           <thead>
            <tr>
-              <th>Options</th>
+              <th>&nbsp; Select</th>
               <th>Account</th>
               <th>OrderId</th>
               <th>Date</th>
-              <th>Price ฿</th>
-              <th>Ship ฿</th>
+              <th>Price฿</th>
+              <th>Ship฿</th>
               <th>Payment</th>
               <th>Count</th>
               <th>Status</th>
@@ -185,34 +185,16 @@ function showOutput1(res) {
             document.querySelector('.details tbody').innerHTML += `
             <tr>
               <td> 	 
-                 <div class="dropdown">
-                    <button class="dropbutton"> Select <i class="fas fa-caret-down"></i></button>
-                    <div class="dropdown-content">
-                           <div>
-                               <input type="text" class="textbox_reason" placeholder="Type the reason here.">
-                               <a role="button" tabindex="0" id="cancelTheOrder"> Cancel the order</a>
-                           </div>
-                           <div>
-                               <input type="text"  class="textbox_invoice" placeholder="Type the invoice number here.">
-                               <a role="button" tabindex="0" id="setInvoiceNumber"> Set Invoice Number</a>
-                           </div>
-                           <div>
-                               <input type="text" class="textbox_shipment1" placeholder="Type the shipment provider here.">
-                               <a role="button" tabindex="0" id="markPacked">Mark as being packed</a>
-                           </div>
-                           <div>
-                               <input type="text" class="textbox_message" placeholder="Type the delivery message here.">
-                               <a role="button" tabindex="0" id="markDelivered">Mark as being delivered</a>
-                           </div>
-                           <div class="input-container">
-                               <div>
-                                   <input type="text" class="textbox_shipment2" placeholder="Type the shipment provider here.">
-                                   <input type="text" class="textbox_tracking" placeholder="Type the tracking number here.">
-                               </div>
-                               <a role="button" tabindex="0" id="markReadyToShip">Mark as being ready to ship</a>
-                           </div>
-                    </div>
-                 </div> 
+               <button class="dropbutton" data-modal-target="#modal">Order Details </button>
+                <div class="modal" id="modal">
+                  <div class="modal-header">
+                    <div class="title">Order Item Details</div>
+                    <button data-close-button class="close-button">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                  </div>
+                </div>
+              <div id="overlay"></div>
               </td>
               <td>${email_address}</td>
               <td>${order_number}</td>
@@ -228,18 +210,140 @@ function showOutput1(res) {
         }
     }
 
+    document.querySelectorAll('[data-modal-target]').forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = document.querySelector(button.dataset.modalTarget)
+            modal.classList.add('active')
+            let innerText = event.target.parentElement.parentElement.innerHTML;
+            let tdList = innerText.split("<td>");
+            let email = tdList[2].replace("</td>", "").trim();
+            let id = tdList[3].replace("</td>", "").trim();
+            overlay.classList.add('active')
+            getOrderItems(modal, id, email);
+        })
+    })
+
+    document.querySelectorAll('[data-close-button]').forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.modal')
+            modal.classList.remove('active')
+            overlay.classList.remove('active')
+        })
+    })
+
+    const overlay = document.getElementById('overlay')
+
+}
+function getOrderItems(modal, id, email) {
+
+    //https://www.oksender.co/getorderitems?id=311458148649838&email=prai@psselection.com
+    let reqUrl = `https://www.oksender.co/getorderitems?id=${id}&email=${email}`;
+    console.log(reqUrl)
+
+    axios.get(reqUrl, { headers: { "Access-Control-Allow-Origin": "*" } })
+        .then(res => showOrderItems(res, modal, email))
+        .catch(err => console.error(err));
+}
+
+function showOrderItems(res, modal, email_address) {
+    console.log(res);
+
+    modal.parentElement.querySelector('.modal-body').innerHTML = `
+        <table id="table" class="table">
+          <thead>
+           <tr>
+              <th>Options</th>
+              <th>See items</th>
+              <th>Account</th>
+              <th>Item Id</th>   
+              <th>Item SKU</th>         
+              <th>Price/PaidPrice ฿</th>
+              <th>Tax ฿</th>
+              <th>Date</th>
+              <th>Status</th>
+             </tr>
+          </thead>
+          <tbody>
+        
+          </tbody>
+        </table>
+      `;
+
+    let jsonArray = res.data.data;
+    console.log(`jsonArray2: ${jsonArray.length}`);
+
+    for (let i = 0; i < jsonArray.length; i++) {
+        let eachObj = jsonArray[i];
+
+        let product_detail_url = eachObj.product_detail_url;
+        let item_price = eachObj.item_price;
+        let paid_price = eachObj.paid_price;
+        let tax_amount = eachObj.tax_amount;
+        let shipping_type = eachObj.shipping_type;
+        let created_at = eachObj.created_at;
+        var createDate = created_at.slice(0, 20);
+        let package_id = eachObj.package_id;
+        let sku = eachObj.sku;
+        let invoice_number = eachObj.invoice_number;
+        let tracking_code = eachObj.tracking_code;
+        let order_item_id = eachObj.order_item_id;
+        let shop_id = eachObj.shop_id;
+        let name = eachObj.name;
+        let status = eachObj.status;
+
+        modal.parentElement.querySelector('.modal-body tbody').innerHTML += `
+                <tr>
+                    <td> 	 
+                       <div class="dropdown">
+                          <button class="dropbutton"> Select <i class="fas fa-caret-down"></i></button>
+                          <div class="dropdown-content">
+                                 <div>
+                                     <input type="text" class="textbox_reason" placeholder="Type the reason here.">
+                                     <a role="button" tabindex="0" id="cancelTheOrder"> Cancel the Item</a>
+                                 </div>
+                                 <div>
+                                     <input type="text"  class="textbox_invoice" placeholder="Type the invoice number here.">
+                                     <a role="button" tabindex="0" id="setInvoiceNumber"> Set Invoice Number</a>
+                                 </div>
+                                 <div>
+                                     <input type="text" class="textbox_shipment1" placeholder="Type the shipment provider here.">
+                                     <a role="button" tabindex="0" id="markPacked">Mark as being packed</a>
+                                 </div>
+                                 <div>
+                                     <input type="text" class="textbox_message" placeholder="Type the delivery message here.">
+                                     <a role="button" tabindex="0" id="markDelivered">Mark as being delivered</a>
+                                 </div>
+                                 <div class="input-container">
+                                     <div>
+                                         <input type="text" class="textbox_shipment2" placeholder="Type the shipment provider here.">
+                                         <input type="text" class="textbox_tracking" placeholder="Type the tracking number here.">
+                                     </div>
+                                     <a role="button" tabindex="0" id="markReadyToShip">Mark as being ready to ship</a>
+                                 </div>
+                          </div>
+                       </div> 
+                    </td>
+                    <td> <a class="item-page-btn" href="${product_detail_url}" target="_blank">Item page <i class="fas fa-caret-right"></i></a> </td>
+                    <td>${email_address}</td>
+                    <td>${order_item_id}</td> 
+                    <td>${sku}</td>           
+                    <td>${item_price} / ${paid_price}</td>
+                    <td>${tax_amount}</td>
+                    <td>${createDate}</td>
+                    <td>${status}</td>
+ 
+                 </tr>
+            `;
+    }
+
     document.querySelectorAll('#cancelTheOrder').forEach(item => {
         item.addEventListener('click', event => {
             let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
             let tdList = innerText.split("<td>");
-            let email = tdList[2].replace("</td>", "").trim();
-            let id = tdList[3].replace("</td>", "").trim();
+            let id = tdList[4].replace("</td>", "").trim();
+            let inputValue = event.target.parentElement.querySelector('.textbox_reason').value;
 
-            //let inputValue = document.getElementById('textbox_reason').value;
-
-            let inputValue = event.target.parentElement.querySelector('․textbox_reason').value;
-
-            cancelTheOrder(id, email, inputValue);
+            cancelTheOrder(id, email_address, inputValue);
         })
     })
 
@@ -247,12 +351,11 @@ function showOutput1(res) {
         item.addEventListener('click', event => {
             let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
             let tdList = innerText.split("<td>");
-            let email = tdList[2].replace("</td>", "").trim();
-            let id = tdList[3].replace("</td>", "").trim();
+            let id = tdList[4].replace("</td>", "").trim();
 
-            let inputValue = event.target.parentElement.querySelector('․textbox_invoice').value;
+            let inputValue = event.target.parentElement.querySelector('.textbox_invoice').value;
 
-            setInvoiceNumber(id, email, inputValue);
+            setInvoiceNumber(id, email_address, inputValue);
         })
     })
 
@@ -260,12 +363,11 @@ function showOutput1(res) {
         item.addEventListener('click', event => {
             let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
             let tdList = innerText.split("<td>");
-            let email = tdList[2].replace("</td>", "").trim();
-            let id = tdList[3].replace("</td>", "").trim();
+            let id = tdList[4].replace("</td>", "").trim();
 
-            let inputValue = event.target.parentElement.querySelector('․textbox_shipment1').value;
+            let inputValue = event.target.parentElement.querySelector('.textbox_shipment1').value;
 
-            markPacked(id, email, inputValue);
+            markPacked(id, email_address, inputValue);
         })
     })
 
@@ -273,12 +375,11 @@ function showOutput1(res) {
         item.addEventListener('click', event => {
             let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
             let tdList = innerText.split("<td>");
-            let email = tdList[2].replace("</td>", "").trim();
-            let id = tdList[3].replace("</td>", "").trim();
+            let id = tdList[4].replace("</td>", "").trim();
 
-            let inputValue = event.target.parentElement.querySelector('․textbox_message').value;
+            let inputValue = event.target.parentElement.querySelector('.textbox_message').value;
 
-            markDelivered(id, email, inputValue);
+            markDelivered(id, email_address, inputValue);
         })
     })
 
@@ -286,15 +387,15 @@ function showOutput1(res) {
         item.addEventListener('click', event => {
             let innerText = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.innerHTML;
             let tdList = innerText.split("<td>");
-            let email = tdList[2].replace("</td>", "").trim();
-            let id = tdList[3].replace("</td>", "").trim();
+            let id = tdList[4].replace("</td>", "").trim();
 
-            let inputValue1 = event.target.parentElement.querySelector('․textbox_shipment2').value;
-            let inputValue2 = event.target.parentElement.querySelector('․textbox_tracking').value;
+            let inputValue1 = event.target.parentElement.querySelector('.textbox_shipment2').value;
+            let inputValue2 = event.target.parentElement.querySelector('.textbox_tracking').value;
 
-            markReadyToShip(id, email, inputValue1, inputValue2);
+            markReadyToShip(id, email_address, inputValue1, inputValue2);
         })
     })
+
 }
 
 function cancelTheOrder(id, email, inputValue) {

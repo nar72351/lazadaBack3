@@ -318,6 +318,18 @@ public class ItemService {
     return responseStr;
   }
 
+  public String getOrderItems(String order_id, String email) {
+    String responseStr = "";
+    try {
+      String access_token = Globals.tokenMap.get(email).get(1);
+      responseStr = GetOrderItemsLazada(access_token, order_id);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return responseStr;
+
+  }
+
   private String GetOrderItemsLazada(String access_token, String order_id) {
     String OrderItemsJson = "";
     try {
@@ -413,6 +425,7 @@ public class ItemService {
     }
     return responseStr;
   }
+
 //  public boolean writeCode(String code) {
 //    boolean itFinished = false;
 //    initFiles();

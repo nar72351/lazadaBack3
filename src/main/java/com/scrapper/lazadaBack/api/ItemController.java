@@ -103,6 +103,17 @@ public class ItemController {
     return itemService.markReadyToShip(id, email, value1, value2);
   }
 
+  //http://localhost:8080/getorderitems?id=123-1&email=email1
+  // http://localhost:8080/getorderitems?id=311458148649838&email=prai@psselection.com
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/getorderitems")
+  @ResponseBody
+  public String getOrderItems(@RequestParam String id, @RequestParam String email) {
+    System.out.println("ItemController: getOrderItems()");
+    System.out.println("Resp: " + id + " - " + email);
+    return itemService.getOrderItems(id, email);
+  }
+
   //http://localhost:8080/
   @CrossOrigin(origins = "*")
   @RequestMapping("/")

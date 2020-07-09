@@ -88,7 +88,6 @@ function ordersWithTime() {
     prev_mth_element2.addEventListener('click', goToPrevMonth2);
 }
 
-
 function showOrders() {
     console.log("showOrders()");
 

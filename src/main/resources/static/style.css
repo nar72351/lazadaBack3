@@ -429,10 +429,7 @@ a {
 }
 
 /******/
-
 .modal {
-	-webkit-font-smoothing: antialiased !important;
-	-moz-osx-font-smoothing: grayscale !important;
 	position: fixed;
 	top: 50%;
 	left: 50%;

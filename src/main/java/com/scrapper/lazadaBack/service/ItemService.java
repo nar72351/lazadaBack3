@@ -30,6 +30,15 @@ public class ItemService {
 
       try {
         String response = getOrdersLazada(accessToken);
+
+        boolean hasOrders = hasOrders(response);
+        if (!hasOrders) {
+          System.out.println("!!hasOrders, Try AGAIN");
+          response = getOrdersLazada(accessToken);
+        } else {
+          System.out.println("OK, continue");
+        }
+
         response = addEmailToJson(response, email) + ",";
         responseArray += response;
 
@@ -45,9 +54,12 @@ public class ItemService {
     return responseArray;
   }
 
+
   public String getOrdersLazada(String access_token) {
     String orders = "No new orders yet...";
     try {
+      Thread.sleep(300);
+
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/orders/get");
@@ -189,8 +201,8 @@ public class ItemService {
     try {
 //      String OrderItemsJson = GetOrderItemsLazada(access_token, order_id);
 //      String item_id = getItemIdFromJson(OrderItemsJson);
-       System.out.println("setInvoiceNumber is called for - " + item_id);
-       ////////////////
+      System.out.println("setInvoiceNumber is called for - " + item_id);
+      ////////////////
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/order/invoice_number/set");
@@ -426,6 +438,30 @@ public class ItemService {
     return responseStr;
   }
 
+  private boolean hasOrders(String jsonContent) {
+    boolean hasOrders = true;
+    try {
+
+      if (jsonContent != null) {
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse(jsonContent);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+
+        JsonObject dataObject = getOBJECT(jsonObject, "data");
+        JsonArray ordersArray = getARRAY(dataObject, "orders");
+
+        if (ordersArray != null && !ordersArray.isJsonNull() && ordersArray.size() > 0) {
+          hasOrders = true;
+        } else {
+          hasOrders = false;
+        }
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return hasOrders;
+  }
 //  public boolean writeCode(String code) {
 //    boolean itFinished = false;
 //    initFiles();

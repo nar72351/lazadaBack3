@@ -114,19 +114,22 @@ public class ItemController {
     return itemService.getOrderItems(id, email);
   }
 
-//  //http://localhost:8080/
-//  @CrossOrigin(origins = "*")
-//  @RequestMapping("/")
-//  public String showIndex() {
-//    return "index";
-//  }
-
-
-  //to get login page http://localhost:8080/login
-  @RequestMapping(value = "/login", method = RequestMethod.GET)
-  public void getLoginForm() {
-
+  //http://localhost:8080/
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/")
+  public String showIndex() {
+    return "index";
   }
+
+  //spring.security.user.name=praisri
+  //spring.security.user.password=psselectionAUN1234
+
+
+//  //to get login page http://localhost:8080/login
+//  @RequestMapping(value = "/login", method = RequestMethod.GET)
+//  public void getLoginForm() {
+//
+//  }
 
 }
 

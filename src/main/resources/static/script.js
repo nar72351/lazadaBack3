@@ -119,7 +119,7 @@ function seeNewOrders() {
     console.log("seeNewOrders()");
 
     axios.get('https://www.oksender.co/orders', {
-        timeout: 1000 * 50,
+        // timeout: 1000 * 180,
         headers: { "Access-Control-Allow-Origin": "*" }
     })
         .then(res => showOutput1(res))
@@ -145,6 +145,7 @@ function showOutput1(res) {
               <th>Count</th>
               <th>Status</th>
               <th>Warehouse</th>
+              <th>Export</th>
            </tr>
           </thead>
           <tbody>
@@ -204,6 +205,7 @@ function showOutput1(res) {
               <td>${items_count}</td>
               <td>${status}</td>
               <td>${warehouse_code}</td>
+              <td><button class="dropbutton" data-excel-button="#excel">Excel</button></td>
            </tr>
       `;
         }
@@ -230,7 +232,85 @@ function showOutput1(res) {
         })
     })
 
+    document.querySelectorAll('[data-excel-button]').forEach(button => {
+        button.addEventListener('click', () => {
+            let innerText = event.target.parentElement.parentElement.innerHTML;
+            let tdList = innerText.split("<td>");
+            let email = tdList[2].replace("</td>", "").trim();
+            let id = tdList[3].replace("</td>", "").trim();
+            generateExcel(id, email);
+        })
+    })
+
     const overlay = document.getElementById('overlay')
+
+}
+
+function generateExcel(id, email) {
+    //////////////////////////////////////////getOrder
+    let orderJson;
+    //https://www.oksender.co/getorder?id=309231430723018&email=adventuretimelzd1@thairiches.com
+    let reqUrl1 = `https://www.oksender.co/getorder?id=${id}&email=${email}`;
+    console.log(reqUrl1)
+
+    axios.get(reqUrl1, { headers: { "Access-Control-Allow-Origin": "*" } })
+        .then(res1 => orderJson = res1)
+        .catch(err1 => console.error(err1));
+    console.log(orderJson)
+
+    //////////////////////////////////////////getOrderItems
+    let orderItemsJson;
+    //https://www.oksender.co/getorderitems?id=309231430723018&email=adventuretimelzd1@thairiches.com
+    let reqUrl2 = `https://www.oksender.co/getorderitems?id=${id}&email=${email}`;
+    console.log(reqUrl2)
+
+    axios.get(reqUrl2, { headers: { "Access-Control-Allow-Origin": "*" } })
+        .then(res2 => orderItemsJson = res2)
+        .catch(err2 => console.error(err2));
+    console.log(orderItemsJson)
+
+    //////////////////////////////////////////createJSONFOREXCEL
+    const data = {
+        "student": id,
+        "object": email,
+        "passes": [
+            {
+                "N": 5,
+                "date": "2018-09-17T00:00:00.000Z",
+                "topic": "Сжатый пересказ (Изложение).  Развитие речи.",
+                "homework": "Изложение",
+                "control": "Ур.",
+                "teacher": "Быкова Елена Николаевна"
+            },
+            {
+                "N": 6,
+                "date": "2018-09-17T00:00:00.000Z",
+                "topic": "Орфограммы в корнях слов. Повторительно-обобщающий урок.",
+                "homework": "Карточки",
+                "control": "Тест",
+                "teacher": "Быкова Елена Николаевна"
+            }
+        ]
+    }
+
+    //////////////////////////////////////////exportExcel
+    var today = getTodaysDate();
+
+    let wb = XLSX.utils.book_new();
+    wb.Props = {
+        Title: "SheetJS Tutorial",
+        Subject: "Test file",
+        Author: "Red Stapler",
+        CreatedDate: new Date(Date.now())
+    };
+    wb.SheetNames.push(today);
+    let ws_data = converToArray(data);
+    let ws = XLSX.utils.aoa_to_sheet(ws_data);
+    wb.Sheets[today] = ws;
+
+    let wbOut = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' })
+
+    saveAs(new Blob([s2ab(wbOut)], { type: "application/octet-stream" }), `order-list-export-${today}.xlsx`)
 
 }
 function getOrderItems(modal, id, email) {
@@ -700,3 +780,34 @@ function refreshPage() {
     window.location.reload();
 }
 
+function getTodaysDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    return today;
+}
+
+function s2ab(s) {
+    let buf = new ArrayBuffer(s.length);
+    let view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+        view[i] = s.charCodeAt(i) & 0xFF
+    }
+    return buf;
+}
+
+
+function converToArray(data) {
+    let ws_data = [
+        ['', '', '', '', data.student],
+        ['', '', '', '', data.object],
+        ['N', 'date', 'topic', 'homework', 'control', 'teacher'],
+        [data.passes[0].N, data.passes[0].date, data.passes[0].topic, data.passes[0].homework, data.passes[0].control, data.passes[0].teacher],
+        [data.passes[1].N, data.passes[1].date, data.passes[1].topic, data.passes[1].homework, data.passes[1].control, data.passes[1].teacher],
+    ];
+    return ws_data
+}

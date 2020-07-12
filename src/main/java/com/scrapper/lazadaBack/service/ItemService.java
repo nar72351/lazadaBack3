@@ -462,6 +462,38 @@ public class ItemService {
     }
     return hasOrders;
   }
+
+  public String getOrder(String order_id, String email) {
+    String responseStr = "";
+    try {
+      String access_token = Globals.tokenMap.get(email).get(1);
+      responseStr = getOrderLazada(access_token, order_id);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return responseStr;
+  }
+
+  public String getOrderLazada(String access_token, String order_id) {
+    String responseStr = "";
+    try {
+      LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
+      LazopRequest request = new LazopRequest();
+      request.setApiName("/order/get");
+      request.setHttpMethod("GET");
+      request.addApiParameter("order_id", order_id);
+      LazopResponse response = client.execute(request, access_token);
+      responseStr = response.getBody();
+      Thread.sleep(700);
+    } catch (Exception e) {
+      responseStr = "ERROR_TRY_AGAIN";
+      System.out.println("ERROR in getOrderLazada()");
+    }
+
+    return responseStr;
+  }
+
+
 //  public boolean writeCode(String code) {
 //    boolean itFinished = false;
 //    initFiles();

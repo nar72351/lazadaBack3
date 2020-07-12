@@ -114,6 +114,18 @@ public class ItemController {
     return itemService.getOrderItems(id, email);
   }
 
+
+  //http://localhost:8080/getorder?id=123-1&email=email1
+  //http://localhost:8080/getorder?id=309231430723018&email=adventuretimelzd1@thairiches.com
+  @CrossOrigin(origins = "*")
+  @RequestMapping("/getorder")
+  @ResponseBody
+  public String getOrder(@RequestParam String id, @RequestParam String email) {
+    System.out.println("ItemController: getOrder()");
+    System.out.println("Resp: " + id + " - " + email);
+    return itemService.getOrder(id, email);
+  }
+
   //http://localhost:8080/
   @CrossOrigin(origins = "*")
   @RequestMapping("/")

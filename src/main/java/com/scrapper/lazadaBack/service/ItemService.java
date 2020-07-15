@@ -18,6 +18,9 @@ public class ItemService {
 
   public String getOrders() {
     //http://localhost:8080/orders
+
+    System.out.println("getOrders");
+
     String responseArray = "";
 
     Globals.initTokensIfNecessery();
@@ -42,6 +45,8 @@ public class ItemService {
           System.out.println("OK, continue");
         }
 
+        System.out.println("STEP6");
+
         response = addEmailToJson(response, email) + ",";
         responseArray += response;
 
@@ -60,6 +65,7 @@ public class ItemService {
 
   public String getOrdersLazada(String access_token) {
     String orders = "No new orders yet...";
+    System.out.println("getOrdersLazada");
     try {
       Thread.sleep(500);
 
@@ -446,6 +452,7 @@ public class ItemService {
   }
 
   private boolean hasOrders(String jsonContent) {
+    System.out.println("hasOrders");
     boolean hasOrders = false;
     try {
 
@@ -466,6 +473,7 @@ public class ItemService {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    System.out.println("hasOrders: " + hasOrders);
     return hasOrders;
   }
 

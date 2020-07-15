@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+	<script lang="javascript" src="xlsx.full.min.js"></script>
+	<script lang="javascript" src="FileSaver.js"></script>
 	<title>Lazada Admin Dashboard</title>
 </head>
 
 <body>
-
+	<div class="spinner"></div>
 	<div class="menu-general">
 		<div class="logo">
 			<a onClick="refreshPage()" href="#">

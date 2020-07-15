@@ -12,9 +12,11 @@ body {
 
 .menu-general {
 	width: 250px;
+	min-width: 210px;
 	height: 100vh;
 	background-color: #313852;
-	border-top-right-radius: 20px;
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
 	display: flex;
 	flex-direction: column;
 }
@@ -134,9 +136,11 @@ tr {
 
 th,
 td {
-	font-size: 14px;
-	padding: 10px;
+	font-size: 13px;
+	padding: 8px;
 	text-align: left;
+	/* overflow: hidden; */
+	max-width: 220px;
 	/*width: 11.11111%;*/
 }
 
@@ -490,3 +494,33 @@ a {
 	opacity: 1;
 	pointer-events: all;
 }
+
+@media only screen and (max-width: 600px) {
+	.body-top {
+		display: none;
+	}
+}
+
+/* Spinner 1 */
+.spinner-1:before {
+	content: "";
+	box-sizing: border-box;
+	position: absolute;
+	top: 70%;
+	left: 55%;
+	width: 60px;
+	height: 60px;
+	margin-top: -30px;
+	margin-left: -30px;
+	border-radius: 50%;
+	border: 3px solid lightgray;
+	border-top-color: rgb(78, 68, 218);
+	animation: spinner 0.7s linear infinite;
+}
+
+@keyframes spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+

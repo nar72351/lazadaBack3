@@ -34,6 +34,9 @@ public class ItemService {
         boolean hasOrders = hasOrders(response);
         if (!hasOrders) {
           System.out.println("!!hasOrders, Try AGAIN");
+
+          Thread.sleep(2000);
+
           response = getOrdersLazada(accessToken);
         } else {
           System.out.println("OK, continue");
@@ -58,14 +61,14 @@ public class ItemService {
   public String getOrdersLazada(String access_token) {
     String orders = "No new orders yet...";
     try {
-      Thread.sleep(300);
+      Thread.sleep(500);
 
       LazopClient client = new LazopClient(Globals.restUrl, Globals.appKey, Globals.appSecret);
       LazopRequest request = new LazopRequest();
       request.setApiName("/orders/get");
       request.setHttpMethod("GET");
 //      request.addApiParameter("created_before", "2020-02-10T16:00:00+08:00");
-      request.addApiParameter("created_after", "2020-05-10T09:00:00+08:00");
+      request.addApiParameter("created_after", "2020-01-01T09:00:00+08:00");
 //      request.addApiParameter("status", "shipped");
 //      request.addApiParameter("update_before", "2012-02-10T16:00:00+08:00");
 //      request.addApiParameter("sort_direction", "DESC");
@@ -419,8 +422,12 @@ public class ItemService {
   private JsonArray getARRAY(JsonObject jsonObject, String str) {
     JsonArray array = null;
 
-    if (!jsonObject.get(str).isJsonNull()) {
-      array = jsonObject.getAsJsonArray(str);
+    try {
+      if (!jsonObject.get(str).isJsonNull()) {
+        array = jsonObject.getAsJsonArray(str);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     return array;
   }
@@ -439,7 +446,7 @@ public class ItemService {
   }
 
   private boolean hasOrders(String jsonContent) {
-    boolean hasOrders = true;
+    boolean hasOrders = false;
     try {
 
       if (jsonContent != null) {
@@ -452,9 +459,8 @@ public class ItemService {
 
         if (ordersArray != null && !ordersArray.isJsonNull() && ordersArray.size() > 0) {
           hasOrders = true;
-        } else {
-          hasOrders = false;
         }
+
       }
 
     } catch (Exception e) {

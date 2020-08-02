@@ -182,9 +182,9 @@ function showOutputFirst(res) {
                 let warehouse_code = eachObj.warehouse_code;
 
                 //Possible values are unpaid, pending, canceled, ready_to_ship, delivered, returned, shipped and failed.
-                // if (status === "delivered" || status === "canceled" || status === "returned" || status === "failed") {
-                //     continue;
-                // }
+                if (status === "delivered" || status === "canceled" || status === "returned" || status === "failed") {
+                    continue;
+                }
 
                 let statusShort = status;
                 if (statusShort.length > 20) {
